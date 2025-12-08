@@ -1,4 +1,4 @@
-# 🚚 FleetTrack - Système de Gestion de Flotte
+# 🚚 TrackFlow - Système de Gestion de Flotte
 
 Application web complète de gestion de flotte de transport routier permettant le suivi des trajets, la consommation de carburant, et la maintenance des véhicules.
 
@@ -60,7 +60,7 @@ Application web complète de gestion de flotte de transport routier permettant l
 ## 🏗 Architecture
 
 ```
-FleetTrack/
+TrackFlow/
 ├── backend/
 │   ├── src/
 │   │   ├── config/          # Configuration de l'app
@@ -105,8 +105,8 @@ FleetTrack/
 ### 1. Cloner le repository
 
 ```bash
-git clone https://github.com/votre-username/fleettrack.git
-cd fleettrack
+git clone https://github.com/keltoummalouki/trackflow.git
+cd TrackFlow
 ```
 
 ### 2. Installation Backend
@@ -135,8 +135,8 @@ PORT=5000
 NODE_ENV=development
 
 # Database
-MONGODB_URI=mongodb://localhost:27017/fleettrack
-MONGODB_TEST_URI=mongodb://localhost:27017/fleettrack_test
+MONGODB_URI=mongodb://localhost:27017/trackflow
+MONGODB_TEST_URI=mongodb://localhost:27017/trackflow_test
 
 # JWT
 JWT_SECRET=votre_secret_jwt_super_securise
@@ -210,10 +210,10 @@ docker-compose build backend
 docker-compose build frontend
 
 # Accéder au conteneur backend
-docker exec -it fleettrack_backend sh
+docker exec -it trackflow sh
 
 # Accéder à MongoDB
-docker exec -it fleettrack_mongodb mongosh
+docker exec -it trackflow_mongodb mongosh
 ```
 
 ### Architecture Docker
@@ -224,7 +224,7 @@ Services:
 - backend: Port 5000
 - mongodb: Port 27017
 
-Network: fleettrack-network
+Network: trackflow-network
 ```
 
 ## 🧪 Tests
@@ -387,13 +387,11 @@ Ce projet est développé dans le cadre d'une formation [2025] Concepteur⋅rice
 ## 📞 Contact
 
 Pour toute question ou suggestion :
-- Email: keltoummalouki@example.com
+- Email: keltoummalouki@gmail.com
 - GitHub: [@keltoummalouki](https://github.com/keltoummalouki)
 
 ---
 
 **Date de création**: 08/12/2025  
-**Deadline**: 12/12/2025  
-**Durée**: 5 jours
 
 Made with ❤️ for efficient fleet management
