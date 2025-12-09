@@ -22,7 +22,6 @@ Application web complète de gestion de flotte de transport routier permettant l
 ### Pour les Administrateurs
 - ✅ Gestion complète de la flotte (camions, remorques, pneus)
 - ✅ Création et assignation des trajets aux chauffeurs
-- ✅ Suivi en temps réel du kilométrage et de la consommation
 - ✅ Rapports détaillés : consommation, kilométrage, maintenance
 - ✅ Configuration des règles de maintenance périodique
 - ✅ Gestion des utilisateurs et des permissions
