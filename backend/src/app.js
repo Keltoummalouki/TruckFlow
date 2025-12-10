@@ -6,6 +6,8 @@ import morgan from 'morgan';
 import logger from './logger/logger.js';
 import { notFound } from './middlewares/notFound.js';
 import healthRoutes from './routes/healthRoutes.js';
+import authRoutes from "./routes/authRoutes.js";
+import { errorHandler } from "./middlewares/errorHandler.js";
 
 const app = express();
 
@@ -37,7 +39,9 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api', healthRoutes);
+app.use('/api/auth', authRoutes);
 
 app.use(notFound);
+app.use(errorHandler);
 
 export default app;
