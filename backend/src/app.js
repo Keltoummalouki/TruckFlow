@@ -3,11 +3,16 @@ import cors from 'cors'
 import { fileURLToPath } from "url";
 import path from 'path';
 import morgan from 'morgan';
+import helmet from "helmet";
+
 import logger from './logger/logger.js';
 import { notFound } from './middlewares/notFound.js';
+import { errorHandler } from "./middlewares/errorHandler.js";
+
 import healthRoutes from './routes/healthRoutes.js';
 import authRoutes from "./routes/authRoutes.js";
-import { errorHandler } from "./middlewares/errorHandler.js";
+
+
 
 const app = express();
 
@@ -19,6 +24,7 @@ app.use(cors({
 app.use(express.json()); // parse JSON request bodies into req.body
 // arse URL-encoded bodies (HTML forms)
 app.use(express.urlencoded({ extended : true })) // extended: true lets it parse nested objects (qs library) instead of simple strings
+app.use(helmet()); // Sécurise les headers HTTP
 
 // import.meta.url: URL of the current module
 const __filename = fileURLToPath(import.meta.url);
