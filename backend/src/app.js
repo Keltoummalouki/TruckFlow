@@ -9,6 +9,11 @@ import healthRoutes from './routes/healthRoutes.js';
 
 const app = express();
 
+app.use(cors({
+    origin: process.env.CORS_ORIGIN || 'http://localhost:5173',
+    credentials: true
+}));
+
 app.use(express.json()); // parse JSON request bodies into req.body
 // arse URL-encoded bodies (HTML forms)
 app.use(express.urlencoded({ extended : true })) // extended: true lets it parse nested objects (qs library) instead of simple strings
