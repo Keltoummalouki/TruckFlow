@@ -9,7 +9,7 @@ export default function Register() {
     lastName: '',
     email: '',
     password: '',
-    role: 'ADMIN',
+    role: 'admin',
   });
   const [showPassword, setShowPassword] = useState(false);
   const [termsAccepted, setTermsAccepted] = useState(false);
