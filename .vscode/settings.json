@@ -4,5 +4,6 @@
   },
   "search.exclude": {
     "**/node_modules": true
-  }
+  },
+  "commentTranslate.hover.enabled": false
 }
