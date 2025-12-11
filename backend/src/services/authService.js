@@ -28,7 +28,7 @@ export const registerUser = async (userData) => {
 
 export const loginUser = async (email, password) => {
     const user = await User.findOne({ email, isActive: true }).select("+password");
-  
+    
     if (!user || !(await user.comparePassword(password))) {
         throw new Error("Invalid credentials");
     }
