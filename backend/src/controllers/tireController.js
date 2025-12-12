@@ -1,42 +1,43 @@
-import * as truckService from '../services/truckService.js';
+import * as tireService from '../services/tireService.js';
 import { createBaseController } from './baseController.js';
 
-const baseController = createBaseController(truckService);
+const baseController = createBaseController(tireService);
 
 export const getAll = baseController.getAll;
 export const getById = baseController.getById;
 export const create = baseController.create;
 export const update = baseController.update;
-export const deleteTruck = async (req, res, next) => {
+export const deleteTire = async (req, res, next) => {
     try {
-        await truckService.deleteTruck(req.params.id);
+        await tireService.deleteTire(req.params.id);
         res.json({ success: true, message: 'Resource deleted' });
     } catch (error) {
         next(error);
     }
 };
 
-export const getAvailable = async (req, res, next) => {
+export const getByStatus = async (req, res, next) => {
     try {
-        const data = await truckService.getAvailableTrucks();
+        const data = await tireService.getByStatus(req.params.status);
         res.json({ success: true, data });
     } catch (error) {
         next(error);
     }
 };
 
-export const assignDriver = async (req, res, next) => {
+export const assignToTruck = async (req, res, next) => {
     try {
-        const data = await truckService.assignDriver(req.params.id, req.body.driverId);
+        const { truckId, position } = req.body;
+        const data = await tireService.assignToTruck(req.params.id, truckId, position);
         res.json({ success: true, data });
     } catch (error) {
         next(error);
     }
 };
 
-export const unassignDriver = async (req, res, next) => {
+export const unassignFromTruck = async (req, res, next) => {
     try {
-        const data = await truckService.unassignDriver(req.params.id);
+        const data = await tireService.unassignFromTruck(req.params.id);
         res.json({ success: true, data });
     } catch (error) {
         next(error);

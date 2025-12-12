@@ -7,4 +7,11 @@ export const getAll = baseController.getAll;
 export const getById = baseController.getById;
 export const create = baseController.create;
 export const update = baseController.update;
-export const deleteDelivery = baseController.delete;
+export const deleteDelivery = async (req, res, next) => {
+    try {
+        await deliveryService.deleteDelivery(req.params.id);
+        res.json({ success: true, message: 'Resource deleted' });
+    } catch (error) {
+        next(error);
+    }
+};
