@@ -14,6 +14,8 @@ import authRoutes from "./routes/authRoutes.js";
 import truckRoutes from "./routes/truckRoutes.js";
 import trailerRoutes from "./routes/trailerRoutes.js";
 import tireRoutes from './routes/tireRoutes.js';
+import tripRoutes from './routes/tripRoutes.js';
+
 
 
 const app = express();
@@ -51,6 +53,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/trucks', truckRoutes);
 app.use('/api/trailers', trailerRoutes);
 app.use('/api/tires', tireRoutes);
+app.use('/api/trips', tripRoutes);
 
 app.use(notFound);
 app.use(errorHandler);
