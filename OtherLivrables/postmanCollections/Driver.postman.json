@@ -1,0 +1,204 @@
+{
+  "info": {
+    "name": "TruckFlow - Driver API",
+    "description": "Driver-specific endpoints for TruckFlow system",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Driver - Get My Trips",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 200', () => {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('Returns my trips', () => {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData.data).to.be.an('array');",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{DRIVER_TOKEN}}"
+          }
+        ],
+        "url": {
+          "raw": "{{BASE_URL}}/api/driver/trips",
+          "host": ["{{BASE_URL}}"],
+          "path": ["api", "driver", "trips"]
+        }
+      }
+    },
+    {
+      "name": "Driver - Get Trip Details",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 200', () => {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('Returns trip details', () => {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData.data).to.have.property('departureLoc');",
+              "    pm.expect(jsonData.data).to.have.property('arrivalLoc');",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{DRIVER_TOKEN}}"
+          }
+        ],
+        "url": {
+          "raw": "{{BASE_URL}}/api/driver/trips/{{TRIP_ID}}",
+          "host": ["{{BASE_URL}}"],
+          "path": ["api", "driver", "trips", "{{TRIP_ID}}"]
+        }
+      }
+    },
+    {
+      "name": "Driver - Start Trip",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 200', () => {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('Trip started', () => {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData.data.status).to.equal('in_progress');",
+              "    pm.expect(jsonData.data.startMileage).to.exist;",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{DRIVER_TOKEN}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"status\": \"in_progress\",\n  \"startMileage\": 50000,\n  \"comments\": \"Starting trip now\"\n}"
+        },
+        "url": {
+          "raw": "{{BASE_URL}}/api/driver/trips/{{TRIP_ID}}/status",
+          "host": ["{{BASE_URL}}"],
+          "path": ["api", "driver", "trips", "{{TRIP_ID}}", "status"]
+        }
+      }
+    },
+    {
+      "name": "Driver - Complete Trip",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 200', () => {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('Trip completed', () => {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData.data.status).to.equal('completed');",
+              "    pm.expect(jsonData.data.endMileage).to.exist;",
+              "    pm.expect(jsonData.data.fuelVolume).to.exist;",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{DRIVER_TOKEN}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"status\": \"completed\",\n  \"endMileage\": 50450,\n  \"fuelVolume\": 120,\n  \"comments\": \"Trip completed successfully. Vehicle in good condition.\"\n}"
+        },
+        "url": {
+          "raw": "{{BASE_URL}}/api/driver/trips/{{TRIP_ID}}/status",
+          "host": ["{{BASE_URL}}"],
+          "path": ["api", "driver", "trips", "{{TRIP_ID}}", "status"]
+        }
+      }
+    },
+    {
+      "name": "Driver - Cannot Access Other Driver Trip",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 403', () => {",
+              "    pm.response.to.have.status(403);",
+              "});",
+              "",
+              "pm.test('Access denied', () => {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData.error).to.exist;",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{DRIVER_TOKEN}}"
+          }
+        ],
+        "url": {
+          "raw": "{{BASE_URL}}/api/driver/trips/{{OTHER_TRIP_ID}}",
+          "host": ["{{BASE_URL}}"],
+          "path": ["api", "driver", "trips", "{{OTHER_TRIP_ID}}"]
+        }
+      }
+    }
+  ]
+}

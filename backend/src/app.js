@@ -12,6 +12,11 @@ import { errorHandler } from "./middlewares/errorHandler.js";
 import healthRoutes from './routes/healthRoutes.js';
 import authRoutes from "./routes/authRoutes.js";
 import truckRoutes from "./routes/truckRoutes.js";
+import trailerRoutes from "./routes/trailerRoutes.js";
+import tireRoutes from './routes/tireRoutes.js';
+import tripRoutes from './routes/tripRoutes.js';
+import driverRoutes from './routes/driverRoutes.js';
+import reportRoutes from './routes/reportRoutes.js';
 
 
 const app = express();
@@ -47,6 +52,12 @@ app.get('/', (req, res) => {
 app.use('/api', healthRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/trucks', truckRoutes);
+app.use('/api/trailers', trailerRoutes);
+app.use('/api/tires', tireRoutes);
+app.use('/api/trips', tripRoutes);
+app.use('/api/driver', driverRoutes);
+app.use('/api/reports', reportRoutes);
+
 
 app.use(notFound);
 app.use(errorHandler);

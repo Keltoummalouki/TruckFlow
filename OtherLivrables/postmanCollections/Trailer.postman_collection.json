@@ -1,0 +1,677 @@
+{
+  "info": {
+    "_postman_id": "trailers-collection-2025",
+    "name": "TruckFlow - Trailers API",
+    "description": "Complete collection for testing Trailers CRUD operations",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Trailers - Create",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 201', () => {",
+              "    pm.response.to.have.status(201);",
+              "});",
+              "",
+              "pm.test('Response has data property', () => {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData).to.have.property('data');",
+              "    pm.environment.set('TRAILER_ID', jsonData.data._id);",
+              "});",
+              "",
+              "pm.test('Trailer has correct fields', () => {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData.data).to.have.property('licensePlate');",
+              "    pm.expect(jsonData.data).to.have.property('type');",
+              "    pm.expect(jsonData.data).to.have.property('capacity');",
+              "    pm.expect(jsonData.data).to.have.property('status');",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{ADMIN_TOKEN}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"licensePlate\": \"REM-2025-001\",\n  \"type\": \"flatbed\",\n  \"capacity\": 25000,\n  \"currentWeight\": 0,\n  \"status\": \"available\",\n  \"mileage\": 12000,\n  \"notes\": \"New flatbed trailer\"\n}"
+        },
+        "url": {
+          "raw": "{{BASE_URL}}/api/trailers",
+          "host": ["{{BASE_URL}}"],
+          "path": ["api", "trailers"]
+        }
+      }
+    },
+    {
+      "name": "Trailers - Create Refrigerated",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 201', () => {",
+              "    pm.response.to.have.status(201);",
+              "});",
+              "",
+              "pm.test('Trailer type is refrigerated', () => {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData.data.type).to.equal('refrigerated');",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{ADMIN_TOKEN}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"licensePlate\": \"REM-FRIGO-001\",\n  \"type\": \"refrigerated\",\n  \"capacity\": 18000,\n  \"currentWeight\": 0,\n  \"status\": \"available\",\n  \"mileage\": 8500,\n  \"notes\": \"Refrigerated unit -20 to +5°C\"\n}"
+        },
+        "url": {
+          "raw": "{{BASE_URL}}/api/trailers",
+          "host": ["{{BASE_URL}}"],
+          "path": ["api", "trailers"]
+        }
+      }
+    },
+    {
+      "name": "Trailers - Create Tanker",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 201', () => {",
+              "    pm.response.to.have.status(201);",
+              "});",
+              "",
+              "pm.test('Trailer type is tanker', () => {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData.data.type).to.equal('tanker');",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{ADMIN_TOKEN}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"licensePlate\": \"REM-TANK-001\",\n  \"type\": \"tanker\",\n  \"capacity\": 30000,\n  \"currentWeight\": 0,\n  \"status\": \"available\",\n  \"mileage\": 5200,\n  \"notes\": \"Fuel tanker\"\n}"
+        },
+        "url": {
+          "raw": "{{BASE_URL}}/api/trailers",
+          "host": ["{{BASE_URL}}"],
+          "path": ["api", "trailers"]
+        }
+      }
+    },
+    {
+      "name": "Trailers - Get All",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 200', () => {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('Response is an array', () => {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData.data).to.be.an('array');",
+              "});",
+              "",
+              "pm.test('Trailers have required fields', () => {",
+              "    const jsonData = pm.response.json();",
+              "    if (jsonData.data.length > 0) {",
+              "        pm.expect(jsonData.data[0]).to.have.property('_id');",
+              "        pm.expect(jsonData.data[0]).to.have.property('licensePlate');",
+              "        pm.expect(jsonData.data[0]).to.have.property('type');",
+              "    }",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{ADMIN_TOKEN}}"
+          }
+        ],
+        "url": {
+          "raw": "{{BASE_URL}}/api/trailers",
+          "host": ["{{BASE_URL}}"],
+          "path": ["api", "trailers"]
+        }
+      }
+    },
+    {
+      "name": "Trailers - Get by ID",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 200', () => {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('Returns single trailer object', () => {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData.data).to.be.an('object');",
+              "    pm.expect(jsonData.data._id).to.equal(pm.environment.get('TRAILER_ID'));",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{ADMIN_TOKEN}}"
+          }
+        ],
+        "url": {
+          "raw": "{{BASE_URL}}/api/trailers/{{TRAILER_ID}}",
+          "host": ["{{BASE_URL}}"],
+          "path": ["api", "trailers", "{{TRAILER_ID}}"]
+        }
+      }
+    },
+    {
+      "name": "Trailers - Get Available",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 200', () => {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('Returns array of available trailers', () => {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData.data).to.be.an('array');",
+              "    jsonData.data.forEach(trailer => {",
+              "        pm.expect(trailer.status).to.equal('available');",
+              "    });",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{ADMIN_TOKEN}}"
+          }
+        ],
+        "url": {
+          "raw": "{{BASE_URL}}/api/trailers/available",
+          "host": ["{{BASE_URL}}"],
+          "path": ["api", "trailers", "available"]
+        }
+      }
+    },
+    {
+      "name": "Trailers - Get by Type (flatbed)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 200', () => {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('Returns only flatbed trailers', () => {",
+              "    const jsonData = pm.response.json();",
+              "    jsonData.data.forEach(trailer => {",
+              "        pm.expect(trailer.type).to.equal('flatbed');",
+              "    });",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{ADMIN_TOKEN}}"
+          }
+        ],
+        "url": {
+          "raw": "{{BASE_URL}}/api/trailers/type/flatbed",
+          "host": ["{{BASE_URL}}"],
+          "path": ["api", "trailers", "type", "flatbed"]
+        }
+      }
+    },
+    {
+      "name": "Trailers - Get by Type (refrigerated)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 200', () => {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('Returns only refrigerated trailers', () => {",
+              "    const jsonData = pm.response.json();",
+              "    jsonData.data.forEach(trailer => {",
+              "        pm.expect(trailer.type).to.equal('refrigerated');",
+              "    });",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{ADMIN_TOKEN}}"
+          }
+        ],
+        "url": {
+          "raw": "{{BASE_URL}}/api/trailers/type/refrigerated",
+          "host": ["{{BASE_URL}}"],
+          "path": ["api", "trailers", "type", "refrigerated"]
+        }
+      }
+    },
+    {
+      "name": "Trailers - Update",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 200', () => {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('Trailer updated with correct values', () => {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData.data.mileage).to.equal(15000);",
+              "    pm.expect(jsonData.data.status).to.equal('maintenance');",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{ADMIN_TOKEN}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"mileage\": 15000,\n  \"status\": \"maintenance\",\n  \"notes\": \"Scheduled maintenance - check tires and brakes\"\n}"
+        },
+        "url": {
+          "raw": "{{BASE_URL}}/api/trailers/{{TRAILER_ID}}",
+          "host": ["{{BASE_URL}}"],
+          "path": ["api", "trailers", "{{TRAILER_ID}}"]
+        }
+      }
+    },
+    {
+      "name": "Trailers - Assign to Truck",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 200', () => {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('Trailer assigned to truck', () => {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData.data.status).to.equal('in_use');",
+              "    pm.expect(jsonData.data.truck).to.exist;",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{ADMIN_TOKEN}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"truckId\": \"{{TRUCK_ID}}\"\n}"
+        },
+        "url": {
+          "raw": "{{BASE_URL}}/api/trailers/{{TRAILER_ID}}/assign",
+          "host": ["{{BASE_URL}}"],
+          "path": ["api", "trailers", "{{TRAILER_ID}}", "assign"]
+        }
+      }
+    },
+    {
+      "name": "Trailers - Unassign from Truck",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 200', () => {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('Trailer unassigned from truck', () => {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData.data.status).to.equal('available');",
+              "    pm.expect(jsonData.data.truck).to.be.null;",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{ADMIN_TOKEN}}"
+          }
+        ],
+        "url": {
+          "raw": "{{BASE_URL}}/api/trailers/{{TRAILER_ID}}/unassign",
+          "host": ["{{BASE_URL}}"],
+          "path": ["api", "trailers", "{{TRAILER_ID}}", "unassign"]
+        }
+      }
+    },
+    {
+      "name": "Trailers - Delete",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 200', () => {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('Delete operation successful', () => {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData.success).to.be.true;",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{ADMIN_TOKEN}}"
+          }
+        ],
+        "url": {
+          "raw": "{{BASE_URL}}/api/trailers/{{TRAILER_ID}}",
+          "host": ["{{BASE_URL}}"],
+          "path": ["api", "trailers", "{{TRAILER_ID}}"]
+        }
+      }
+    },
+    {
+      "name": "Trailers - Test Authorization (Chauffeur Cannot Create)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 403 Forbidden', () => {",
+              "    pm.response.to.have.status(403);",
+              "});",
+              "",
+              "pm.test('Proper error message returned', () => {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData.error).to.exist;",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{CHAUFFEUR_TOKEN}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"licensePlate\": \"REM-TEST-FAIL\",\n  \"type\": \"flatbed\",\n  \"capacity\": 20000\n}"
+        },
+        "url": {
+          "raw": "{{BASE_URL}}/api/trailers",
+          "host": ["{{BASE_URL}}"],
+          "path": ["api", "trailers"]
+        }
+      }
+    },
+    {
+      "name": "Trailers - Test Authorization (Chauffeur Can Read)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 200', () => {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('Chauffeur can view trailers', () => {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData.data).to.be.an('array');",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{CHAUFFEUR_TOKEN}}"
+          }
+        ],
+        "url": {
+          "raw": "{{BASE_URL}}/api/trailers",
+          "host": ["{{BASE_URL}}"],
+          "path": ["api", "trailers"]
+        }
+      }
+    },
+    {
+      "name": "Trailers - Invalid Trailer ID (404)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 404', () => {",
+              "    pm.response.to.have.status(404);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{ADMIN_TOKEN}}"
+          }
+        ],
+        "url": {
+          "raw": "{{BASE_URL}}/api/trailers/invalidid123",
+          "host": ["{{BASE_URL}}"],
+          "path": ["api", "trailers", "invalidid123"]
+        }
+      }
+    },
+    {
+      "name": "Trailers - Missing Required Fields",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 400 Bad Request', () => {",
+              "    pm.response.to.have.status(400);",
+              "});",
+              "",
+              "pm.test('Validation error returned', () => {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData.error).to.exist;",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{ADMIN_TOKEN}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"licensePlate\": \"REM-INVALID\"\n}"
+        },
+        "url": {
+          "raw": "{{BASE_URL}}/api/trailers",
+          "host": ["{{BASE_URL}}"],
+          "path": ["api", "trailers"]
+        }
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "BASE_URL",
+      "value": "http://localhost:5000",
+      "type": "string"
+    },
+    {
+      "key": "ADMIN_TOKEN",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "CHAUFFEUR_TOKEN",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "TRAILER_ID",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "TRUCK_ID",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}
