@@ -1,0 +1,114 @@
+{
+  "info": {
+    "name": "TruckFlow - Reports API",
+    "description": "Reports and statistics endpoints for admin",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Reports - Fleet Overview",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{ADMIN_TOKEN}}"
+          }
+        ],
+        "url": {
+          "raw": "{{BASE_URL}}/api/reports/fleet-overview",
+          "host": ["{{BASE_URL}}"],
+          "path": ["api", "reports", "fleet-overview"]
+        }
+      }
+    },
+    {
+      "name": "Reports - Fuel Consumption",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{ADMIN_TOKEN}}"
+          }
+        ],
+        "url": {
+          "raw": "{{BASE_URL}}/api/reports/fuel-consumption?startDate=2024-01-01&endDate=2024-12-31",
+          "host": ["{{BASE_URL}}"],
+          "path": ["api", "reports", "fuel-consumption"],
+          "query": [
+            {
+              "key": "startDate",
+              "value": "2024-01-01"
+            },
+            {
+              "key": "endDate",
+              "value": "2024-12-31"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Reports - Mileage",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{ADMIN_TOKEN}}"
+          }
+        ],
+        "url": {
+          "raw": "{{BASE_URL}}/api/reports/mileage",
+          "host": ["{{BASE_URL}}"],
+          "path": ["api", "reports", "mileage"]
+        }
+      }
+    },
+    {
+      "name": "Reports - Driver Performance",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{ADMIN_TOKEN}}"
+          }
+        ],
+        "url": {
+          "raw": "{{BASE_URL}}/api/reports/driver-performance?startDate=2024-01-01&endDate=2024-12-31",
+          "host": ["{{BASE_URL}}"],
+          "path": ["api", "reports", "driver-performance"],
+          "query": [
+            {
+              "key": "startDate",
+              "value": "2024-01-01"
+            },
+            {
+              "key": "endDate",
+              "value": "2024-12-31"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Reports - Tire Status",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{ADMIN_TOKEN}}"
+          }
+        ],
+        "url": {
+          "raw": "{{BASE_URL}}/api/reports/tire-status",
+          "host": ["{{BASE_URL}}"],
+          "path": ["api", "reports", "tire-status"]
+        }
+      }
+    }
+  ]
+}
