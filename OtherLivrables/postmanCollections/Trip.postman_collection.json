@@ -1,0 +1,552 @@
+{
+  "info": {
+    "name": "TruckFlow - Trips API",
+    "description": "Complete API testing collection for Trip management in TruckFlow system",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Trips - Create New Trip",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 201', () => {",
+              "    pm.response.to.have.status(201);",
+              "});",
+              "",
+              "pm.test('Trip created successfully', () => {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData.success).to.be.true;",
+              "    pm.expect(jsonData.data).to.have.property('_id');",
+              "    pm.expect(jsonData.data.status).to.equal('pending');",
+              "    pm.collectionVariables.set('TRIP_ID', jsonData.data._id);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{ADMIN_TOKEN}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"scheduledDeparture\": \"2024-02-15T08:00:00Z\",\n  \"departureLoc\": \"Warehouse A - Paris\",\n  \"arrivalLoc\": \"Client Site - Lyon\",\n  \"truck\": \"{{TRUCK_ID}}\",\n  \"driver\": \"{{DRIVER_ID}}\",\n  \"comments\": \"Fragile cargo - handle with care\"\n}"
+        },
+        "url": {
+          "raw": "{{BASE_URL}}/api/trips",
+          "host": ["{{BASE_URL}}"],
+          "path": ["api", "trips"]
+        }
+      }
+    },
+    {
+      "name": "Trips - Get All Trips",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 200', () => {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('Returns array of trips', () => {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData.data).to.be.an('array');",
+              "    pm.expect(jsonData.data.length).to.be.greaterThan(0);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{ADMIN_TOKEN}}"
+          }
+        ],
+        "url": {
+          "raw": "{{BASE_URL}}/api/trips",
+          "host": ["{{BASE_URL}}"],
+          "path": ["api", "trips"]
+        }
+      }
+    },
+    {
+      "name": "Trips - Get Trip by ID",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 200', () => {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('Returns correct trip', () => {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData.data).to.have.property('departureLoc');",
+              "    pm.expect(jsonData.data).to.have.property('arrivalLoc');",
+              "    pm.expect(jsonData.data).to.have.property('truck');",
+              "    pm.expect(jsonData.data).to.have.property('driver');",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{ADMIN_TOKEN}}"
+          }
+        ],
+        "url": {
+          "raw": "{{BASE_URL}}/api/trips/{{TRIP_ID}}",
+          "host": ["{{BASE_URL}}"],
+          "path": ["api", "trips", "{{TRIP_ID}}"]
+        }
+      }
+    },
+    {
+      "name": "Trips - Get by Status",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 200', () => {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('Returns trips with correct status', () => {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData.data).to.be.an('array');",
+              "    if (jsonData.data.length > 0) {",
+              "        pm.expect(jsonData.data[0].status).to.equal('pending');",
+              "    }",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{ADMIN_TOKEN}}"
+          }
+        ],
+        "url": {
+          "raw": "{{BASE_URL}}/api/trips/status/pending",
+          "host": ["{{BASE_URL}}"],
+          "path": ["api", "trips", "status", "pending"]
+        }
+      }
+    },
+    {
+      "name": "Trips - Get by Driver",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 200', () => {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('Returns driver trips', () => {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData.data).to.be.an('array');",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{DRIVER_TOKEN}}"
+          }
+        ],
+        "url": {
+          "raw": "{{BASE_URL}}/api/trips/driver/{{DRIVER_ID}}",
+          "host": ["{{BASE_URL}}"],
+          "path": ["api", "trips", "driver", "{{DRIVER_ID}}"]
+        }
+      }
+    },
+    {
+      "name": "Trips - Update Trip",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 200', () => {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('Trip updated successfully', () => {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData.data.comments).to.include('Updated');",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{ADMIN_TOKEN}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"comments\": \"Updated: Route changed due to traffic\"\n}"
+        },
+        "url": {
+          "raw": "{{BASE_URL}}/api/trips/{{TRIP_ID}}",
+          "host": ["{{BASE_URL}}"],
+          "path": ["api", "trips", "{{TRIP_ID}}"]
+        }
+      }
+    },
+    {
+      "name": "Trips - Update Status to In Progress",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 200', () => {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('Status updated to in_progress', () => {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData.data.status).to.equal('in_progress');",
+              "    pm.expect(jsonData.data.startMileage).to.equal(50000);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{DRIVER_TOKEN}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"status\": \"in_progress\",\n  \"startMileage\": 50000,\n  \"comments\": \"Trip started on time\"\n}"
+        },
+        "url": {
+          "raw": "{{BASE_URL}}/api/trips/{{TRIP_ID}}/status",
+          "host": ["{{BASE_URL}}"],
+          "path": ["api", "trips", "{{TRIP_ID}}", "status"]
+        }
+      }
+    },
+    {
+      "name": "Trips - Update Status to Completed",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 200', () => {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('Status updated to completed', () => {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData.data.status).to.equal('completed');",
+              "    pm.expect(jsonData.data.endMileage).to.equal(50450);",
+              "    pm.expect(jsonData.data.fuelVolume).to.equal(120);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{DRIVER_TOKEN}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"status\": \"completed\",\n  \"endMileage\": 50450,\n  \"fuelVolume\": 120,\n  \"comments\": \"Trip completed successfully. No issues.\"\n}"
+        },
+        "url": {
+          "raw": "{{BASE_URL}}/api/trips/{{TRIP_ID}}/status",
+          "host": ["{{BASE_URL}}"],
+          "path": ["api", "trips", "{{TRIP_ID}}", "status"]
+        }
+      }
+    },
+    {
+      "name": "Trips - Delete",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 200', () => {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('Delete operation successful', () => {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData.success).to.be.true;",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{ADMIN_TOKEN}}"
+          }
+        ],
+        "url": {
+          "raw": "{{BASE_URL}}/api/trips/{{TRIP_ID}}",
+          "host": ["{{BASE_URL}}"],
+          "path": ["api", "trips", "{{TRIP_ID}}"]
+        }
+      }
+    },
+    {
+      "name": "Trips - Test Authorization (Driver Cannot Create)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 403 Forbidden', () => {",
+              "    pm.response.to.have.status(403);",
+              "});",
+              "",
+              "pm.test('Proper error message returned', () => {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData.error).to.exist;",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{DRIVER_TOKEN}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"scheduledDeparture\": \"2024-02-20T08:00:00Z\",\n  \"departureLoc\": \"Test\",\n  \"arrivalLoc\": \"Test\",\n  \"truck\": \"{{TRUCK_ID}}\",\n  \"driver\": \"{{DRIVER_ID}}\"\n}"
+        },
+        "url": {
+          "raw": "{{BASE_URL}}/api/trips",
+          "host": ["{{BASE_URL}}"],
+          "path": ["api", "trips"]
+        }
+      }
+    },
+    {
+      "name": "Trips - Test Authorization (Driver Can Read)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 200', () => {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('Driver can view trips', () => {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData.data).to.be.an('array');",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{DRIVER_TOKEN}}"
+          }
+        ],
+        "url": {
+          "raw": "{{BASE_URL}}/api/trips",
+          "host": ["{{BASE_URL}}"],
+          "path": ["api", "trips"]
+        }
+      }
+    },
+    {
+      "name": "Trips - Invalid Trip ID (404)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 404', () => {",
+              "    pm.response.to.have.status(404);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{ADMIN_TOKEN}}"
+          }
+        ],
+        "url": {
+          "raw": "{{BASE_URL}}/api/trips/invalidid123",
+          "host": ["{{BASE_URL}}"],
+          "path": ["api", "trips", "invalidid123"]
+        }
+      }
+    },
+    {
+      "name": "Trips - Missing Required Fields",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 400 Bad Request', () => {",
+              "    pm.response.to.have.status(400);",
+              "});",
+              "",
+              "pm.test('Validation error returned', () => {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData.error).to.exist;",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{ADMIN_TOKEN}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"departureLoc\": \"Test Location\"\n}"
+        },
+        "url": {
+          "raw": "{{BASE_URL}}/api/trips",
+          "host": ["{{BASE_URL}}"],
+          "path": ["api", "trips"]
+        }
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "BASE_URL",
+      "value": "http://localhost:5000",
+      "type": "string"
+    },
+    {
+      "key": "ADMIN_TOKEN",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "DRIVER_TOKEN",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "TRIP_ID",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "TRUCK_ID",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "DRIVER_ID",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}
