@@ -1,4 +1,3 @@
-// backend/src/routes/tripRoutes.js
 import express from 'express';
 import * as tripController from '../controllers/tripController.js';
 import { authenticate, authorize } from '../middlewares/authMiddleware.js';

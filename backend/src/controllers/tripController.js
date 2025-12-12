@@ -1,4 +1,3 @@
-// backend/src/controllers/tripController.js
 import * as tripService from '../services/tripService.js';
 import { createBaseController } from './baseController.js';
 
