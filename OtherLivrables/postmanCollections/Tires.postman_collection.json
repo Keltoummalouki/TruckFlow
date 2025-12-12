@@ -1,0 +1,504 @@
+{
+  "info": {
+    "name": "TruckFlow - Tires API",
+    "description": "Complete API testing collection for Tire management in TruckFlow system",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Tires - Create New Tire",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 201', () => {",
+              "    pm.response.to.have.status(201);",
+              "});",
+              "",
+              "pm.test('Tire created successfully', () => {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData.success).to.be.true;",
+              "    pm.expect(jsonData.data).to.have.property('_id');",
+              "    pm.expect(jsonData.data.serialNumber).to.equal('TIRE-2024-001');",
+              "    pm.collectionVariables.set('TIRE_ID', jsonData.data._id);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{ADMIN_TOKEN}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"serialNumber\": \"TIRE-2024-001\",\n  \"brand\": \"Michelin\",\n  \"model\": \"XZE\",\n  \"size\": \"315/80R22.5\",\n  \"purchaseDate\": \"2024-01-15\",\n  \"maxMileage\": 150000,\n  \"status\": \"new\",\n  \"notes\": \"Premium tire for long haul\"\n}"
+        },
+        "url": {
+          "raw": "{{BASE_URL}}/api/tires",
+          "host": ["{{BASE_URL}}"],
+          "path": ["api", "tires"]
+        }
+      }
+    },
+    {
+      "name": "Tires - Get All Tires",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 200', () => {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('Returns array of tires', () => {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData.data).to.be.an('array');",
+              "    pm.expect(jsonData.data.length).to.be.greaterThan(0);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{ADMIN_TOKEN}}"
+          }
+        ],
+        "url": {
+          "raw": "{{BASE_URL}}/api/tires",
+          "host": ["{{BASE_URL}}"],
+          "path": ["api", "tires"]
+        }
+      }
+    },
+    {
+      "name": "Tires - Get Tire by ID",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 200', () => {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('Returns correct tire', () => {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData.data).to.have.property('serialNumber');",
+              "    pm.expect(jsonData.data).to.have.property('brand');",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{ADMIN_TOKEN}}"
+          }
+        ],
+        "url": {
+          "raw": "{{BASE_URL}}/api/tires/{{TIRE_ID}}",
+          "host": ["{{BASE_URL}}"],
+          "path": ["api", "tires", "{{TIRE_ID}}"]
+        }
+      }
+    },
+    {
+      "name": "Tires - Get by Status",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 200', () => {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('Returns tires with correct status', () => {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData.data).to.be.an('array');",
+              "    if (jsonData.data.length > 0) {",
+              "        pm.expect(jsonData.data[0].status).to.equal('new');",
+              "    }",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{ADMIN_TOKEN}}"
+          }
+        ],
+        "url": {
+          "raw": "{{BASE_URL}}/api/tires/status/new",
+          "host": ["{{BASE_URL}}"],
+          "path": ["api", "tires", "status", "new"]
+        }
+      }
+    },
+    {
+      "name": "Tires - Update Tire",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 200', () => {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('Tire updated successfully', () => {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData.data.currentMileage).to.equal(25000);",
+              "    pm.expect(jsonData.data.status).to.equal('in_use');",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{ADMIN_TOKEN}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"currentMileage\": 25000,\n  \"status\": \"in_use\",\n  \"notes\": \"Tire performing well\"\n}"
+        },
+        "url": {
+          "raw": "{{BASE_URL}}/api/tires/{{TIRE_ID}}",
+          "host": ["{{BASE_URL}}"],
+          "path": ["api", "tires", "{{TIRE_ID}}"]
+        }
+      }
+    },
+    {
+      "name": "Tires - Assign to Truck",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 200', () => {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('Tire assigned to truck', () => {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData.data.status).to.equal('in_use');",
+              "    pm.expect(jsonData.data.truck).to.exist;",
+              "    pm.expect(jsonData.data.position).to.equal('front_left');",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{ADMIN_TOKEN}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"truckId\": \"{{TRUCK_ID}}\",\n  \"position\": \"front_left\"\n}"
+        },
+        "url": {
+          "raw": "{{BASE_URL}}/api/tires/{{TIRE_ID}}/assign",
+          "host": ["{{BASE_URL}}"],
+          "path": ["api", "tires", "{{TIRE_ID}}", "assign"]
+        }
+      }
+    },
+    {
+      "name": "Tires - Unassign from Truck",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 200', () => {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('Tire unassigned from truck', () => {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData.data.status).to.equal('new');",
+              "    pm.expect(jsonData.data.truck).to.be.null;",
+              "    pm.expect(jsonData.data.position).to.equal('spare');",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{ADMIN_TOKEN}}"
+          }
+        ],
+        "url": {
+          "raw": "{{BASE_URL}}/api/tires/{{TIRE_ID}}/unassign",
+          "host": ["{{BASE_URL}}"],
+          "path": ["api", "tires", "{{TIRE_ID}}", "unassign"]
+        }
+      }
+    },
+    {
+      "name": "Tires - Delete",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 200', () => {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('Delete operation successful', () => {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData.success).to.be.true;",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{ADMIN_TOKEN}}"
+          }
+        ],
+        "url": {
+          "raw": "{{BASE_URL}}/api/tires/{{TIRE_ID}}",
+          "host": ["{{BASE_URL}}"],
+          "path": ["api", "tires", "{{TIRE_ID}}"]
+        }
+      }
+    },
+    {
+      "name": "Tires - Test Authorization (Driver Cannot Create)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 403 Forbidden', () => {",
+              "    pm.response.to.have.status(403);",
+              "});",
+              "",
+              "pm.test('Proper error message returned', () => {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData.error).to.exist;",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{DRIVER_TOKEN}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"serialNumber\": \"TIRE-FAIL-001\",\n  \"brand\": \"Test\",\n  \"model\": \"Test\",\n  \"size\": \"315/80R22.5\",\n  \"purchaseDate\": \"2024-01-15\",\n  \"maxMileage\": 150000\n}"
+        },
+        "url": {
+          "raw": "{{BASE_URL}}/api/tires",
+          "host": ["{{BASE_URL}}"],
+          "path": ["api", "tires"]
+        }
+      }
+    },
+    {
+      "name": "Tires - Test Authorization (Driver Can Read)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 200', () => {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('Driver can view tires', () => {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData.data).to.be.an('array');",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{DRIVER_TOKEN}}"
+          }
+        ],
+        "url": {
+          "raw": "{{BASE_URL}}/api/tires",
+          "host": ["{{BASE_URL}}"],
+          "path": ["api", "tires"]
+        }
+      }
+    },
+    {
+      "name": "Tires - Invalid Tire ID (404)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 404', () => {",
+              "    pm.response.to.have.status(404);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{ADMIN_TOKEN}}"
+          }
+        ],
+        "url": {
+          "raw": "{{BASE_URL}}/api/tires/invalidid123",
+          "host": ["{{BASE_URL}}"],
+          "path": ["api", "tires", "invalidid123"]
+        }
+      }
+    },
+    {
+      "name": "Tires - Missing Required Fields",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 400 Bad Request', () => {",
+              "    pm.response.to.have.status(400);",
+              "});",
+              "",
+              "pm.test('Validation error returned', () => {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData.error).to.exist;",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{ADMIN_TOKEN}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"serialNumber\": \"TIRE-INVALID\"\n}"
+        },
+        "url": {
+          "raw": "{{BASE_URL}}/api/tires",
+          "host": ["{{BASE_URL}}"],
+          "path": ["api", "tires"]
+        }
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "BASE_URL",
+      "value": "http://localhost:5000",
+      "type": "string"
+    },
+    {
+      "key": "ADMIN_TOKEN",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "DRIVER_TOKEN",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "TIRE_ID",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "TRUCK_ID",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}
