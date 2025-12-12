@@ -1,4 +1,3 @@
-// backend/src/models/trailerModel.js
 import mongoose from 'mongoose';
 
 const trailerSchema = new mongoose.Schema(
