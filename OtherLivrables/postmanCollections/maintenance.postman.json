@@ -1,0 +1,317 @@
+{
+  "info": {
+    "name": "TruckFlow - Maintenance API",
+    "description": "Maintenance and maintenance rules management",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Maintenance Rules",
+      "item": [
+        {
+          "name": "Rules - Create Rule",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 201', () => {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "pm.test('Rule created', () => {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.success).to.be.true;",
+                  "    pm.expect(jsonData.data).to.have.property('_id');",
+                  "    pm.collectionVariables.set('MAINTENANCE_RULE_ID', jsonData.data._id);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ADMIN_TOKEN}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Oil Change - Every 10000km\",\n  \"intervalValue\": 10000,\n  \"conditionType\": \"mileage\",\n  \"targetType\": \"truck\",\n  \"description\": \"Regular oil change maintenance\",\n  \"isActive\": true\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/api/maintenance/rules",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "maintenance", "rules"]
+            }
+          }
+        },
+        {
+          "name": "Rules - Get All Rules",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ADMIN_TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/maintenance/rules",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "maintenance", "rules"]
+            }
+          }
+        },
+        {
+          "name": "Rules - Update Rule",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ADMIN_TOKEN}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"intervalValue\": 15000,\n  \"isActive\": true\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/api/maintenance/rules/{{MAINTENANCE_RULE_ID}}",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "maintenance", "rules", "{{MAINTENANCE_RULE_ID}}"]
+            }
+          }
+        },
+        {
+          "name": "Rules - Delete Rule",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ADMIN_TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/maintenance/rules/{{MAINTENANCE_RULE_ID}}",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "maintenance", "rules", "{{MAINTENANCE_RULE_ID}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Maintenance - Create",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 201', () => {",
+              "    pm.response.to.have.status(201);",
+              "});",
+              "",
+              "pm.test('Maintenance created', () => {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData.success).to.be.true;",
+              "    pm.expect(jsonData.data).to.have.property('_id');",
+              "    pm.collectionVariables.set('MAINTENANCE_ID', jsonData.data._id);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{ADMIN_TOKEN}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"oil_change\",\n  \"date\": \"2024-02-20T10:00:00Z\",\n  \"description\": \"Scheduled oil change\",\n  \"cost\": 150,\n  \"status\": \"scheduled\",\n  \"targetType\": \"truck\",\n  \"targetId\": \"{{TRUCK_ID}}\",\n  \"notes\": \"Use synthetic oil\"\n}"
+        },
+        "url": {
+          "raw": "{{BASE_URL}}/api/maintenance",
+          "host": ["{{BASE_URL}}"],
+          "path": ["api", "maintenance"]
+        }
+      }
+    },
+    {
+      "name": "Maintenance - Get All",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{ADMIN_TOKEN}}"
+          }
+        ],
+        "url": {
+          "raw": "{{BASE_URL}}/api/maintenance",
+          "host": ["{{BASE_URL}}"],
+          "path": ["api", "maintenance"]
+        }
+      }
+    },
+    {
+      "name": "Maintenance - Get by ID",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{ADMIN_TOKEN}}"
+          }
+        ],
+        "url": {
+          "raw": "{{BASE_URL}}/api/maintenance/{{MAINTENANCE_ID}}",
+          "host": ["{{BASE_URL}}"],
+          "path": ["api", "maintenance", "{{MAINTENANCE_ID}}"]
+        }
+      }
+    },
+    {
+      "name": "Maintenance - Get by Target",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{ADMIN_TOKEN}}"
+          }
+        ],
+        "url": {
+          "raw": "{{BASE_URL}}/api/maintenance/target/truck/{{TRUCK_ID}}",
+          "host": ["{{BASE_URL}}"],
+          "path": ["api", "maintenance", "target", "truck", "{{TRUCK_ID}}"]
+        }
+      }
+    },
+    {
+      "name": "Maintenance - Get Upcoming",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{ADMIN_TOKEN}}"
+          }
+        ],
+        "url": {
+          "raw": "{{BASE_URL}}/api/maintenance/upcoming",
+          "host": ["{{BASE_URL}}"],
+          "path": ["api", "maintenance", "upcoming"]
+        }
+      }
+    },
+    {
+      "name": "Maintenance - Check Needed",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{ADMIN_TOKEN}}"
+          }
+        ],
+        "url": {
+          "raw": "{{BASE_URL}}/api/maintenance/check-needed",
+          "host": ["{{BASE_URL}}"],
+          "path": ["api", "maintenance", "check-needed"]
+        }
+      }
+    },
+    {
+      "name": "Maintenance - Update",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{ADMIN_TOKEN}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"status\": \"completed\",\n  \"cost\": 175,\n  \"notes\": \"Completed successfully. Used premium synthetic oil.\"\n}"
+        },
+        "url": {
+          "raw": "{{BASE_URL}}/api/maintenance/{{MAINTENANCE_ID}}",
+          "host": ["{{BASE_URL}}"],
+          "path": ["api", "maintenance", "{{MAINTENANCE_ID}}"]
+        }
+      }
+    },
+    {
+      "name": "Maintenance - Delete",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{ADMIN_TOKEN}}"
+          }
+        ],
+        "url": {
+          "raw": "{{BASE_URL}}/api/maintenance/{{MAINTENANCE_ID}}",
+          "host": ["{{BASE_URL}}"],
+          "path": ["api", "maintenance", "{{MAINTENANCE_ID}}"]
+        }
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "BASE_URL",
+      "value": "http://localhost:5000",
+      "type": "string"
+    },
+    {
+      "key": "ADMIN_TOKEN",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "MAINTENANCE_ID",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "MAINTENANCE_RULE_ID",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "TRUCK_ID",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}
