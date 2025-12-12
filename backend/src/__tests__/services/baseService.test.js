@@ -39,19 +39,21 @@ describe('getAll', () => {
 
 describe('getById', () => {
     it('devrait retourner un document par ID', async () => {
-    const mockDoc = { id: '123', name: 'Test' };
+    const validId = '507f1f77bcf86cd799439011';
+    const mockDoc = { id: validId, name: 'Test' };
     mockModel.populate.mockResolvedValue(mockDoc);
 
-    const result = await service.getById('123');
+    const result = await service.getById(validId);
 
-    expect(mockModel.findById).toHaveBeenCalledWith('123');
+    expect(mockModel.findById).toHaveBeenCalledWith(validId);
     expect(result).toEqual(mockDoc);
     });
 
     it('devrait lancer une erreur si non trouvé', async () => {
+    const validId = '507f1f77bcf86cd799439011';
     mockModel.populate.mockResolvedValue(null);
 
-    await expect(service.getById('999')).rejects.toThrow('Resource not found');
+    await expect(service.getById(validId)).rejects.toThrow('Resource not found');
     });
 });
 
@@ -70,38 +72,42 @@ describe('create', () => {
 
 describe('update', () => {
     it('devrait mettre à jour un document', async () => {
+    const validId = '507f1f77bcf86cd799439011';
     const data = { name: 'Updated' };
-    const mockUpdated = { id: '123', ...data };
+    const mockUpdated = { id: validId, ...data };
     mockModel.findByIdAndUpdate.mockResolvedValue(mockUpdated);
 
-    const result = await service.update('123', data);
+    const result = await service.update(validId, data);
 
-    expect(mockModel.findByIdAndUpdate).toHaveBeenCalledWith('123', data, { new: true, runValidators: true });
+    expect(mockModel.findByIdAndUpdate).toHaveBeenCalledWith(validId, data, { new: true, runValidators: true });
     expect(result).toEqual(mockUpdated);
     });
 
     it('devrait lancer une erreur si non trouvé', async () => {
+    const validId = '507f1f77bcf86cd799439011';
     mockModel.findByIdAndUpdate.mockResolvedValue(null);
 
-    await expect(service.update('999', {})).rejects.toThrow('Resource not found');
+    await expect(service.update(validId, {})).rejects.toThrow('Resource not found');
     });
 });
 
 describe('delete', () => {
     it('devrait supprimer un document', async () => {
-    const mockDeleted = { id: '123' };
+    const validId = '507f1f77bcf86cd799439011';
+    const mockDeleted = { id: validId };
     mockModel.findByIdAndDelete.mockResolvedValue(mockDeleted);
 
-    const result = await service.delete('123');
+    const result = await service.delete(validId);
 
-    expect(mockModel.findByIdAndDelete).toHaveBeenCalledWith('123');
+    expect(mockModel.findByIdAndDelete).toHaveBeenCalledWith(validId);
     expect(result).toEqual(mockDeleted);
     });
 
     it('devrait lancer une erreur si non trouvé', async () => {
+    const validId = '507f1f77bcf86cd799439011';
     mockModel.findByIdAndDelete.mockResolvedValue(null);
 
-    await expect(service.delete('999')).rejects.toThrow('Resource not found');
+    await expect(service.delete(validId)).rejects.toThrow('Resource not found');
     });
 });
 });

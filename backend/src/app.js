@@ -17,6 +17,8 @@ import tireRoutes from './routes/tireRoutes.js';
 import tripRoutes from './routes/tripRoutes.js';
 import driverRoutes from './routes/driverRoutes.js';
 import reportRoutes from './routes/reportRoutes.js';
+import maintenanceRoutes from './routes/maintenanceRoutes.js';
+
 
 
 const app = express();
@@ -57,6 +59,7 @@ app.use('/api/tires', tireRoutes);
 app.use('/api/trips', tripRoutes);
 app.use('/api/driver', driverRoutes);
 app.use('/api/reports', reportRoutes);
+app.use('/api/maintenance', maintenanceRoutes);
 
 
 app.use(notFound);

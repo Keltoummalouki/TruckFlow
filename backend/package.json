@@ -7,9 +7,9 @@
     "start": "node server.js",
     "dev": "nodemon server.js",
     "init:accounts": "node scripts/initAccounts.js",
-    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
-    "test:watch": "node --experimental-vm-modules node_modules/jest/bin/jest.js --watch",
-    "test:coverage": "node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage"
+    "test": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js",
+    "test:watch": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js --watch",
+    "test:coverage": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js --coverage"
   },
   "keywords": [],
   "author": "",
@@ -31,6 +31,7 @@
     "mongoose": "^9.0.1",
     "morgan": "^1.10.1",
     "nodemon": "^3.1.11",
+    "pdfkit": "^0.17.2",
     "winston": "^3.19.0"
   }
 }

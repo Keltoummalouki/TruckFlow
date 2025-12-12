@@ -2,14 +2,22 @@ import { jest } from '@jest/globals';
 
 const mockTruckModel = {
   find: jest.fn(),
-  findById: jest.fn(),
-  findByIdAndUpdate: jest.fn(),
-  findByIdAndDelete: jest.fn(),
+};
+
+const mockBaseService = {
+  getAll: jest.fn(),
+  getById: jest.fn(),
   create: jest.fn(),
+  update: jest.fn(),
+  delete: jest.fn(),
 };
 
 jest.unstable_mockModule('../../models/truckModel.js', () => ({
   default: mockTruckModel,
+}));
+
+jest.unstable_mockModule('../../services/baseService.js', () => ({
+  createBaseService: jest.fn(() => mockBaseService),
 }));
 
 const { getAll, getById, create, update, deleteTruck, getAvailableTrucks, assignDriver, unassignDriver } = await import('../../services/truckService.js');
@@ -22,36 +30,32 @@ describe('TruckService', () => {
   describe('getAll', () => {
     it('devrait retourner tous les camions', async () => {
       const mockTrucks = [{ id: 1 }, { id: 2 }];
-      mockTruckModel.find.mockReturnValue({
-        populate: jest.fn().mockResolvedValue(mockTrucks),
-      });
+      mockBaseService.getAll.mockResolvedValue(mockTrucks);
 
       const result = await getAll();
 
-      expect(mockTruckModel.find).toHaveBeenCalledWith({});
+      expect(mockBaseService.getAll).toHaveBeenCalled();
       expect(result).toEqual(mockTrucks);
     });
   });
 
   describe('getById', () => {
     it('devrait retourner un camion par ID', async () => {
-      const mockTruck = { id: '123', licensePlate: 'ABC123' };
-      mockTruckModel.findById.mockReturnValue({
-        populate: jest.fn().mockResolvedValue(mockTruck),
-      });
+      const validId = '507f1f77bcf86cd799439011';
+      const mockTruck = { id: validId, licensePlate: 'ABC123' };
+      mockBaseService.getById.mockResolvedValue(mockTruck);
 
-      const result = await getById('123');
+      const result = await getById(validId);
 
-      expect(mockTruckModel.findById).toHaveBeenCalledWith('123');
+      expect(mockBaseService.getById).toHaveBeenCalledWith(validId, 'driver');
       expect(result).toEqual(mockTruck);
     });
 
     it('devrait lancer une erreur si non trouvé', async () => {
-      mockTruckModel.findById.mockReturnValue({
-        populate: jest.fn().mockResolvedValue(null),
-      });
+      const validId = '507f1f77bcf86cd799439011';
+      mockBaseService.getById.mockRejectedValue(new Error('Resource not found'));
 
-      await expect(getById('999')).rejects.toThrow('Resource not found');
+      await expect(getById(validId)).rejects.toThrow('Resource not found');
     });
   });
 
@@ -59,36 +63,38 @@ describe('TruckService', () => {
     it('devrait créer un nouveau camion', async () => {
       const data = { licensePlate: 'XYZ789' };
       const mockCreated = { id: '123', ...data };
-      mockTruckModel.create.mockResolvedValue(mockCreated);
+      mockBaseService.create.mockResolvedValue(mockCreated);
 
       const result = await create(data);
 
-      expect(mockTruckModel.create).toHaveBeenCalledWith(data);
+      expect(mockBaseService.create).toHaveBeenCalledWith(data);
       expect(result).toEqual(mockCreated);
     });
   });
 
   describe('update', () => {
     it('devrait mettre à jour un camion', async () => {
+      const validId = '507f1f77bcf86cd799439011';
       const data = { status: 'maintenance' };
-      const mockUpdated = { id: '123', ...data };
-      mockTruckModel.findByIdAndUpdate.mockResolvedValue(mockUpdated);
+      const mockUpdated = { id: validId, ...data };
+      mockBaseService.update.mockResolvedValue(mockUpdated);
 
-      const result = await update('123', data);
+      const result = await update(validId, data);
 
-      expect(mockTruckModel.findByIdAndUpdate).toHaveBeenCalledWith('123', data, { new: true, runValidators: true });
+      expect(mockBaseService.update).toHaveBeenCalledWith(validId, data);
       expect(result).toEqual(mockUpdated);
     });
   });
 
   describe('deleteTruck', () => {
     it('devrait supprimer un camion', async () => {
-      const mockDeleted = { id: '123' };
-      mockTruckModel.findByIdAndDelete.mockResolvedValue(mockDeleted);
+      const validId = '507f1f77bcf86cd799439011';
+      const mockDeleted = { id: validId };
+      mockBaseService.delete.mockResolvedValue(mockDeleted);
 
-      const result = await deleteTruck('123');
+      const result = await deleteTruck(validId);
 
-      expect(mockTruckModel.findByIdAndDelete).toHaveBeenCalledWith('123');
+      expect(mockBaseService.delete).toHaveBeenCalledWith(validId);
       expect(result).toEqual(mockDeleted);
     });
   });
@@ -107,24 +113,27 @@ describe('TruckService', () => {
 
   describe('assignDriver', () => {
     it('devrait assigner un chauffeur à un camion', async () => {
-      const mockUpdated = { id: '123', driver: '456', status: 'in_use' };
-      mockTruckModel.findByIdAndUpdate.mockResolvedValue(mockUpdated);
+      const truckId = '507f1f77bcf86cd799439011';
+      const driverId = '507f1f77bcf86cd799439012';
+      const mockUpdated = { id: truckId, driver: driverId, status: 'in_use' };
+      mockBaseService.update.mockResolvedValue(mockUpdated);
 
-      const result = await assignDriver('123', '456');
+      const result = await assignDriver(truckId, driverId);
 
-      expect(mockTruckModel.findByIdAndUpdate).toHaveBeenCalledWith('123', { driver: '456', status: 'in_use' }, { new: true, runValidators: true });
+      expect(mockBaseService.update).toHaveBeenCalledWith(truckId, { driver: driverId, status: 'in_use' });
       expect(result).toEqual(mockUpdated);
     });
   });
 
   describe('unassignDriver', () => {
     it('devrait désassigner un chauffeur d\'un camion', async () => {
-      const mockUpdated = { id: '123', driver: null, status: 'available' };
-      mockTruckModel.findByIdAndUpdate.mockResolvedValue(mockUpdated);
+      const truckId = '507f1f77bcf86cd799439011';
+      const mockUpdated = { id: truckId, driver: null, status: 'available' };
+      mockBaseService.update.mockResolvedValue(mockUpdated);
 
-      const result = await unassignDriver('123');
+      const result = await unassignDriver(truckId);
 
-      expect(mockTruckModel.findByIdAndUpdate).toHaveBeenCalledWith('123', { driver: null, status: 'available' }, { new: true, runValidators: true });
+      expect(mockBaseService.update).toHaveBeenCalledWith(truckId, { driver: null, status: 'available' });
       expect(result).toEqual(mockUpdated);
     });
   });
