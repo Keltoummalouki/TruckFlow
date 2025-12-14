@@ -35,3 +35,13 @@ export const refresh = async (req, res, next) => {
 export const getProfile = async (req, res) => {
     res.json({ success: true, data: req.user });
 };
+
+export const getUsers = async (req, res, next) => {
+    try {
+        const result = await authService.getUsers(req.query);
+        res.json({ success: true, ...result });
+    } catch (error) {
+        next(error);
+    }
+};
+

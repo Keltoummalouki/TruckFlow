@@ -28,7 +28,6 @@ export default function Header({ onMenuToggle, pageTitle }) {
     return (
         <header className="bg-white border-b border-gray-200 sticky top-0 z-30 shadow-sm">
             <div className="flex items-center justify-between px-4 lg:px-8 py-4">
-                {/* Left Section - Mobile Menu & Page Title */}
                 <div className="flex items-center space-x-4">
                     <button
                         onClick={onMenuToggle}
@@ -44,15 +43,12 @@ export default function Header({ onMenuToggle, pageTitle }) {
                     </div>
                 </div>
 
-                {/* Right Section - Notifications & User Menu */}
                 <div className="flex items-center space-x-4">
-                    {/* Notifications */}
                     <button className="relative p-2 rounded-lg text-gray-600 hover:bg-gray-100 transition-colors">
                         <Bell className="h-5 w-5" />
                         <span className="absolute top-1 right-1 h-2 w-2 bg-red-500 rounded-full"></span>
                     </button>
 
-                    {/* User Menu */}
                     <div className="relative" ref={menuRef}>
                         <button
                             onClick={() => setShowUserMenu(!showUserMenu)}
@@ -71,10 +67,8 @@ export default function Header({ onMenuToggle, pageTitle }) {
                             </div>
                         </button>
 
-                        {/* Dropdown Menu */}
                         {showUserMenu && (
                             <div className="absolute right-0 mt-2 w-64 bg-white rounded-2xl shadow-2xl border border-gray-200/50 py-2 animate-in fade-in slide-in-from-top-2 duration-200">
-                                {/* User Info */}
                                 <div className="px-4 py-3 border-b border-gray-100">
                                     <p className="text-sm font-semibold text-slate-900">
                                         {user?.firstName} {user?.lastName}
@@ -87,7 +81,6 @@ export default function Header({ onMenuToggle, pageTitle }) {
                                     </span>
                                 </div>
 
-                                {/* Menu Items */}
                                 <div className="py-2">
                                     <button
                                         onClick={() => {
@@ -112,7 +105,6 @@ export default function Header({ onMenuToggle, pageTitle }) {
                                     </button>
                                 </div>
 
-                                {/* Logout */}
                                 <div className="border-t border-gray-100 pt-2">
                                     <button
                                         onClick={handleLogout}

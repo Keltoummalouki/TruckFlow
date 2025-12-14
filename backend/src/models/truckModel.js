@@ -6,7 +6,9 @@ const truckSchema = new mongoose.Schema({
     model: { type: String, required: true, trim: true },
     year: { type: Number, required: true },
     capacity: { type: Number, required: true },
-    status: { type: String, enum: ['available', 'in_use', 'maintenance'], default: 'available' },
+    mileage: { type: Number, default: 0, min: 0 },
+    fuelConsumption: { type: Number, default: 0, min: 0 }, // L/100km
+    status: { type: String, enum: ['active', 'maintenance', 'inactive'], default: 'active' },
     driver: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
 }, { timestamps: true });
 

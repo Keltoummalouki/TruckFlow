@@ -90,7 +90,6 @@ export default function DriverDashboard() {
 
     return (
         <div className="space-y-8">
-            {/* Welcome Section */}
             <div className="bg-gradient-to-br from-blue-600 via-blue-700 to-slate-900 rounded-3xl p-8 shadow-2xl border border-blue-500/20 relative overflow-hidden">
                 <div className="absolute inset-0 opacity-10">
                     <div className="absolute top-10 right-10 w-64 h-64 bg-white rounded-full blur-3xl"></div>
@@ -107,7 +106,6 @@ export default function DriverDashboard() {
                 </div>
             </div>
 
-            {/* Stats Grid */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {stats.map((stat, index) => {
                     const Icon = stat.icon;
@@ -133,7 +131,6 @@ export default function DriverDashboard() {
                 })}
             </div>
 
-            {/* My Trips */}
             <div className="bg-white rounded-2xl shadow-lg border border-gray-200/50 overflow-hidden">
                 <div className="p-6 border-b border-gray-200">
                     <h2 className="text-xl font-bold text-slate-900">My Trips</h2>
@@ -213,7 +210,6 @@ export default function DriverDashboard() {
                 </div>
             </div>
 
-            {/* Quick Alert */}
             <div className="bg-gradient-to-r from-orange-50 to-orange-100 border-l-4 border-orange-500 rounded-xl p-6">
                 <div className="flex items-start space-x-3">
                     <AlertCircle className="h-6 w-6 text-orange-600 flex-shrink-0 mt-0.5" />

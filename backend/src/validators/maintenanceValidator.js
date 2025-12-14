@@ -1,24 +1,32 @@
 import Joi from 'joi';
 
 export const createMaintenanceSchema = Joi.object({
-    type: Joi.string().valid('tire_change', 'oil_change', 'inspection', 'repair', 'other').required(),
+    type: Joi.string().valid('tire_change', 'oil_change', 'tire_rotation', 'brake_service', 'inspection', 'repair', 'other').required(),
     date: Joi.date().required(),
     description: Joi.string().required(),
-    cost: Joi.number().min(0),
-    status: Joi.string().valid('scheduled', 'in_progress', 'completed', 'cancelled'),
-    targetType: Joi.string().valid('Truck', 'Trailer', 'Tire').required(),
+    cost: Joi.number().min(0).optional(),
+    status: Joi.string().valid('scheduled', 'in_progress', 'completed', 'cancelled').optional(),
+    targetType: Joi.string().valid('Truck', 'Trailer', 'Tire', 'truck', 'trailer', 'tire').required(),
     targetId: Joi.string().pattern(/^[0-9a-fA-F]{24}$/).required(),
-    notes: Joi.string()
-});
+    truck: Joi.string().pattern(/^[0-9a-fA-F]{24}$/).optional(), // Allow truck field (will be mapped to targetId)
+    nextDueDate: Joi.date().optional().allow(null, ''),
+    nextDueMileage: Joi.number().min(0).optional().allow(null, ''),
+    notes: Joi.string().optional().allow(null, '')
+}).unknown(false);
 
 export const updateMaintenanceSchema = Joi.object({
-    type: Joi.string().valid('tire_change', 'oil_change', 'inspection', 'repair', 'other'),
-    date: Joi.date(),
-    description: Joi.string(),
-    cost: Joi.number().min(0),
-    status: Joi.string().valid('scheduled', 'in_progress', 'completed', 'cancelled'),
-    notes: Joi.string()
-});
+    type: Joi.string().valid('tire_change', 'oil_change', 'tire_rotation', 'brake_service', 'inspection', 'repair', 'other').optional(),
+    date: Joi.date().optional(),
+    description: Joi.string().optional(),
+    cost: Joi.number().min(0).optional(),
+    status: Joi.string().valid('scheduled', 'in_progress', 'completed', 'cancelled').optional(),
+    targetType: Joi.string().valid('Truck', 'Trailer', 'Tire', 'truck', 'trailer', 'tire').optional(),
+    targetId: Joi.string().pattern(/^[0-9a-fA-F]{24}$/).optional(),
+    truck: Joi.string().pattern(/^[0-9a-fA-F]{24}$/).optional(),
+    nextDueDate: Joi.date().optional().allow(null, ''),
+    nextDueMileage: Joi.number().min(0).optional().allow(null, ''),
+    notes: Joi.string().optional().allow(null, '')
+}).unknown(false).min(1);
 
 export const createRuleSchema = Joi.object({
     name: Joi.string().required(),

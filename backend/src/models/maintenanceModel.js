@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 const maintenanceSchema = new mongoose.Schema({
     type: {
         type: String,
-        enum: ['tire_change', 'oil_change', 'inspection', 'repair', 'other'],
+        enum: ['tire_change', 'oil_change', 'tire_rotation', 'brake_service', 'inspection', 'repair', 'other'],
         required: true
     },
     date: {
