@@ -59,24 +59,52 @@ function App() {
                       }
                     />
 
-                    {/* Trucks Management */}
-                    <Route path="trucks" element={<TrucksList />} />
+                    {/* Admin Only Routes */}
+                    <Route path="trucks" element={
+                      <ProtectedRoute allowedRoles={['admin']}>
+                        <TrucksList />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="trips" element={
+                      <ProtectedRoute allowedRoles={['admin']}>
+                        <TripsList />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="trailers" element={
+                      <ProtectedRoute allowedRoles={['admin']}>
+                        <TrailersList />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="tires" element={
+                      <ProtectedRoute allowedRoles={['admin']}>
+                        <TiresList />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="maintenance" element={
+                      <ProtectedRoute allowedRoles={['admin']}>
+                        <MaintenanceList />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="reports" element={
+                      <ProtectedRoute allowedRoles={['admin']}>
+                        <Reports />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="settings" element={
+                      <ProtectedRoute allowedRoles={['admin']}>
+                        <PlaceholderPage title="Settings" />
+                      </ProtectedRoute>
+                    } />
 
-                    {/* Trips Management */}
-                    <Route path="trips" element={<TripsList />} />
+                    {/* Driver Only Routes */}
+                    <Route path="my-trips" element={
+                      <ProtectedRoute allowedRoles={['driver']}>
+                        <MyTrips />
+                      </ProtectedRoute>
+                    } />
 
-                    {/* Trailers Management */}
-                    <Route path="trailers" element={<TrailersList />} />
-
-                    {/* Tires Management */}
-                    <Route path="tires" element={<TiresList />} />
-
-                    {/* Placeholder routes for navigation items */}
-                    <Route path="maintenance" element={<MaintenanceList />} />
-                    <Route path="reports" element={<Reports />} />
-                    <Route path="my-trips" element={<MyTrips />} />
+                    {/* Shared Routes */}
                     <Route path="profile" element={<Profile />} />
-                    <Route path="settings" element={<PlaceholderPage title="Settings" />} />
 
                     {/* Default redirect */}
                     <Route index element={<Navigate to="/dashboard" replace />} />
