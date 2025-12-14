@@ -3,7 +3,14 @@ import { createBaseService } from './baseService.js';
 
 const baseService = createBaseService(Truck);
 
-export const getAll = (filter = {}) => baseService.getAll(filter, 'driver');
+export const getAll = (filter = {}, options = {}) => {
+  // Add search fields for trucks
+  const searchOptions = {
+    ...options,
+    searchFields: options.searchFields || ['licensePlate', 'brand', 'model']
+  };
+  return baseService.getAll(filter, 'driver', searchOptions);
+};
 
 export const getById = (id) => baseService.getById(id, 'driver');
 
@@ -14,13 +21,13 @@ export const update = (id, data) => baseService.update(id, data);
 export const deleteTruck = (id) => baseService.delete(id);
 
 export const getAvailableTrucks = async () => {
-  return await Truck.find({ status: 'available' });
+  return await Truck.find({ status: 'active' });
 };
 
 export const assignDriver = async (truckId, driverId) => {
-    return await update(truckId, { driver: driverId, status: 'in_use' });
+  return await update(truckId, { driver: driverId });
 };
 
 export const unassignDriver = async (truckId) => {
-    return await update(truckId, { driver: null, status: 'available' });
+  return await update(truckId, { driver: null });
 };

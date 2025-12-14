@@ -1,11 +1,23 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useAuth } from './context/AuthContext';
+import { TruckProvider } from './context/TruckContext';
+import { TripProvider } from './context/TripContext';
+import { TrailerProvider } from './context/TrailerContext';
+import { TireProvider } from './context/TireContext';
+import { MaintenanceProvider } from './context/MaintenanceContext';
 import Login from './components/Login';
 import Register from './components/Register';
 import ProtectedRoute from './components/ProtectedRoute';
 import MainLayout from './layout/MainLayout';
 import AdminDashboard from './pages/AdminDashboard';
 import DriverDashboard from './pages/DriverDashboard';
+import TrucksList from './pages/Trucks/TrucksList';
+import TripsList from './pages/Trips/TripsList';
+import TrailersList from './pages/Trailers/TrailersList';
+import TiresList from './pages/Tires/TiresList';
+import MaintenanceList from './pages/Maintenance/MaintenanceList';
+import Reports from './pages/Reports/Reports';
+import Profile from './pages/Profile';
 import './App.css';
 
 function App() {
@@ -13,52 +25,70 @@ function App() {
 
   return (
     <BrowserRouter>
-      <Routes>
-        {/* Public Routes */}
-        <Route
-          path="/login"
-          element={!user ? <Login /> : <Navigate to="/dashboard" replace />}
-        />
-        <Route
-          path="/register"
-          element={!user ? <Register /> : <Navigate to="/dashboard" replace />}
-        />
+      <TruckProvider>
+        <TripProvider>
+          <TrailerProvider>
+            <TireProvider>
+              <MaintenanceProvider>
+                <Routes>
+                  {/* Public Routes */}
+                  <Route
+                    path="/login"
+                    element={!user ? <Login /> : <Navigate to="/dashboard" replace />}
+                  />
+                  <Route
+                    path="/register"
+                    element={!user ? <Register /> : <Navigate to="/dashboard" replace />}
+                  />
 
-        {/* Protected Routes with Layout */}
-        <Route
-          path="/"
-          element={
-            <ProtectedRoute>
-              <MainLayout />
-            </ProtectedRoute>
-          }
-        >
-          {/* Dashboard - Role-based routing */}
-          <Route
-            path="dashboard"
-            element={
-              user?.role === 'admin' ? <AdminDashboard /> : <DriverDashboard />
-            }
-          />
+                  {/* Protected Routes with Layout */}
+                  <Route
+                    path="/"
+                    element={
+                      <ProtectedRoute>
+                        <MainLayout />
+                      </ProtectedRoute>
+                    }
+                  >
+                    {/* Dashboard - Role-based routing */}
+                    <Route
+                      path="dashboard"
+                      element={
+                        user?.role === 'admin' ? <AdminDashboard /> : <DriverDashboard />
+                      }
+                    />
 
-          {/* Placeholder routes for navigation items */}
-          <Route path="trips" element={<PlaceholderPage title="Trips Management" />} />
-          <Route path="trucks" element={<PlaceholderPage title="Trucks Management" />} />
-          <Route path="trailers" element={<PlaceholderPage title="Trailers Management" />} />
-          <Route path="tires" element={<PlaceholderPage title="Tires Management" />} />
-          <Route path="maintenance" element={<PlaceholderPage title="Maintenance" />} />
-          <Route path="reports" element={<PlaceholderPage title="Reports" />} />
-          <Route path="my-trips" element={<PlaceholderPage title="My Trips" />} />
-          <Route path="profile" element={<PlaceholderPage title="My Profile" />} />
-          <Route path="settings" element={<PlaceholderPage title="Settings" />} />
+                    {/* Trucks Management */}
+                    <Route path="trucks" element={<TrucksList />} />
 
-          {/* Default redirect */}
-          <Route index element={<Navigate to="/dashboard" replace />} />
-        </Route>
+                    {/* Trips Management */}
+                    <Route path="trips" element={<TripsList />} />
 
-        {/* Fallback redirect */}
-        <Route path="*" element={<Navigate to={user ? "/dashboard" : "/login"} replace />} />
-      </Routes>
+                    {/* Trailers Management */}
+                    <Route path="trailers" element={<TrailersList />} />
+
+                    {/* Tires Management */}
+                    <Route path="tires" element={<TiresList />} />
+
+                    {/* Placeholder routes for navigation items */}
+                    <Route path="maintenance" element={<MaintenanceList />} />
+                    <Route path="reports" element={<Reports />} />
+                    <Route path="my-trips" element={<PlaceholderPage title="My Trips" />} />
+                    <Route path="profile" element={<Profile />} />
+                    <Route path="settings" element={<PlaceholderPage title="Settings" />} />
+
+                    {/* Default redirect */}
+                    <Route index element={<Navigate to="/dashboard" replace />} />
+                  </Route>
+
+                  {/* Fallback redirect */}
+                  <Route path="*" element={<Navigate to={user ? "/dashboard" : "/login"} replace />} />
+                </Routes>
+              </MaintenanceProvider>
+            </TireProvider>
+          </TrailerProvider>
+        </TripProvider>
+      </TruckProvider>
     </BrowserRouter>
   );
 }

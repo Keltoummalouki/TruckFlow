@@ -7,7 +7,13 @@ import { createBaseService } from './baseService.js';
 
 const baseService = createBaseService(Maintenance);
 
-export const getAll = (filter = {}) => baseService.getAll(filter);
+export const getAll = (filter = {}, options = {}) => {
+    const searchOptions = {
+        ...options,
+        searchFields: options.searchFields || ['type', 'description']
+    };
+    return baseService.getAll(filter, '', searchOptions);
+};
 export const getById = (id) => baseService.getById(id);
 export const create = (data) => baseService.create(data);
 export const update = (id, data) => baseService.update(id, data);
@@ -30,7 +36,7 @@ export const checkMaintenanceNeeded = async () => {
 
     for (const rule of rules) {
         let targets = [];
-        
+
         if (rule.targetType === 'Truck') {
             targets = await Truck.find();
         } else if (rule.targetType === 'Trailer') {
@@ -51,7 +57,7 @@ export const checkMaintenanceNeeded = async () => {
             if (rule.conditionType === 'mileage' || rule.conditionType === 'both') {
                 const currentMileage = target.currentMileage || 0;
                 const lastMileage = lastMaintenance?.targetId?.currentMileage || 0;
-                
+
                 if (currentMileage - lastMileage >= rule.intervalValue) {
                     needsMaintenance = true;
                 }
@@ -60,7 +66,7 @@ export const checkMaintenanceNeeded = async () => {
             if (rule.conditionType === 'time' || rule.conditionType === 'both') {
                 const lastDate = lastMaintenance?.date || target.createdAt;
                 const daysSince = Math.floor((Date.now() - lastDate) / (1000 * 60 * 60 * 24));
-                
+
                 if (daysSince >= rule.intervalValue) {
                     needsMaintenance = true;
                 }

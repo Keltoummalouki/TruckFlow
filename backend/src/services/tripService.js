@@ -3,7 +3,13 @@ import { createBaseService } from './baseService.js';
 
 const baseService = createBaseService(Trip);
 
-export const getAll = (filter = {}) => baseService.getAll(filter, 'truck driver');
+export const getAll = (filter = {}, options = {}) => {
+    const searchOptions = {
+        ...options,
+        searchFields: options.searchFields || ['departureLoc', 'arrivalLoc']
+    };
+    return baseService.getAll(filter, 'truck driver', searchOptions);
+};
 export const getById = (id) => baseService.getById(id, 'truck driver');
 export const create = (data) => baseService.create(data);
 export const update = (id, data) => baseService.update(id, data);

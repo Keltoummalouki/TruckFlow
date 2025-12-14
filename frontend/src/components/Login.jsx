@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { Activity, Eye, EyeOff, AlertCircle, Loader2, Truck, Shield, Clock } from 'lucide-react';
 
@@ -155,13 +156,12 @@ export default function Login() {
                             </button>
                         </form>
 
-                        {/* Divider */}
                         <div className="mt-8 pt-6 border-t border-gray-200">
                             <p className="text-center text-sm text-slate-600">
-                                Need help? Contact{' '}
-                                <a href="mailto:support@truckflow.com" className="font-medium text-blue-600 hover:text-blue-700 transition-colors">
-                                    support@truckflow.com
-                                </a>
+                                Don't have an account?{' '}
+                                <Link to="/register" className="font-medium text-blue-600 hover:text-blue-700 transition-colors">
+                                    Sign up
+                                </Link>
                             </p>
                         </div>
                     </div>
