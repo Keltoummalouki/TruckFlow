@@ -145,49 +145,143 @@ export default function MyTrips() {
             const { jsPDF } = await import('jspdf');
             const doc = new jsPDF();
 
-            // Header
-            doc.setFontSize(20);
-            doc.text('TruckFlow - Trip Mission Order', 14, 20);
+            // Brand Colors
+            const primaryColor = [37, 99, 235]; // Blue-600
+            const secondaryColor = [71, 85, 105]; // Slate-600
+            const accentColor = [22, 163, 74]; // Green-600
 
+            // 1. Header Section
+            // Logo Background
+            doc.setFillColor(...primaryColor);
+            doc.rect(0, 0, 210, 40, 'F');
+
+            // Title
+            doc.setTextColor(255, 255, 255);
+            doc.setFontSize(24);
+            doc.setFont('helvetica', 'bold');
+            doc.text('TRUCKFLOW', 14, 25);
+
+            doc.setFontSize(12);
+            doc.setFont('helvetica', 'normal');
+            doc.text('Mission Order Report', 14, 33);
+
+            // Right Header Info
             doc.setFontSize(10);
-            doc.text(`Generated: ${new Date().toLocaleDateString()}`, 14, 30);
+            doc.text(`Date: ${new Date().toLocaleDateString()}`, 196, 20, { align: 'right' });
+            doc.text(`Ref: ${trip._id.slice(-8).toUpperCase()}`, 196, 28, { align: 'right' });
 
-            // Trip Details
+            // 2. Status Badge
+            const statusText = trip.status.replace('_', ' ').toUpperCase();
+            doc.setFillColor(240, 240, 240);
+            doc.roundedRect(14, 50, 40, 10, 2, 2, 'F');
+            doc.setTextColor(...primaryColor);
+            doc.setFontSize(10);
+            doc.setFont('helvetica', 'bold');
+            doc.text(statusText, 34, 56.5, { align: 'center' });
+
+            // 3. Main Trip Information
+            let y = 75;
+
+            // Route Section
+            doc.setTextColor(...secondaryColor);
+            doc.setFont('helvetica', 'bold');
             doc.setFontSize(14);
-            doc.text('Trip Details', 14, 45);
+            doc.text('ROUTE INFORMATION', 14, y);
 
-            doc.setFontSize(10);
-            const details = [
-                `Trip ID: ${trip._id}`,
-                `Status: ${trip.status.replace('_', ' ').toUpperCase()}`,
-                ``,
-                `Departure: ${trip.departureLoc}`,
-                `Arrival: ${trip.arrivalLoc}`,
-                `Scheduled: ${new Date(trip.scheduledDeparture).toLocaleString()}`,
-                ``,
-                `Truck: ${trip.truck?.licensePlate || 'N/A'}`,
-                `Driver: ${user?.firstName} ${user?.lastName}`,
-                ``,
-                `Start Mileage: ${trip.startMileage || 'N/A'} km`,
-                `End Mileage: ${trip.endMileage || 'N/A'} km`,
-                `Fuel Consumed: ${trip.fuelVolume || 'N/A'} L`,
-                ``,
-                `Comments: ${trip.comments || 'None'}`
+            doc.setDrawColor(200, 200, 200);
+            doc.line(14, y + 2, 196, y + 2);
+            y += 15;
+
+            const routeData = [
+                ['Departure', trip.departureLoc],
+                ['Arrival', trip.arrivalLoc],
+                ['Scheduled Date', new Date(trip.scheduledDeparture).toLocaleString()]
             ];
 
-            let y = 55;
-            details.forEach(line => {
-                doc.text(line, 14, y);
-                y += 7;
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(11);
+            doc.setTextColor(0, 0, 0);
+
+            routeData.forEach(([label, value]) => {
+                doc.setTextColor(100, 100, 100);
+                doc.text(label, 14, y);
+                doc.setTextColor(0, 0, 0);
+                doc.text(value, 60, y);
+                y += 10;
             });
 
-            // Footer
-            doc.setFontSize(8);
-            doc.text('TruckFlow Fleet Management System', 14, 280);
+            // Vehicle & Driver Section
+            y += 10;
+            doc.setTextColor(...secondaryColor);
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(14);
+            doc.text('VEHICLE & DRIVER', 14, y);
 
-            doc.save(`trip-${trip._id.slice(-8)}.pdf`);
-            alert.success('PDF downloaded successfully!');
+            doc.setDrawColor(200, 200, 200);
+            doc.line(14, y + 2, 196, y + 2);
+            y += 15;
+
+            const vehicleData = [
+                ['Truck', trip.truck?.licensePlate || 'N/A'],
+                ['Driver', `${user?.firstName} ${user?.lastName}`]
+            ];
+
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(11);
+
+            vehicleData.forEach(([label, value]) => {
+                doc.setTextColor(100, 100, 100);
+                doc.text(label, 14, y);
+                doc.setTextColor(0, 0, 0);
+                doc.text(value, 60, y);
+                y += 10;
+            });
+
+            // Trip Statistics (if started/completed)
+            if (trip.startMileage) {
+                y += 10;
+                doc.setTextColor(...secondaryColor);
+                doc.setFont('helvetica', 'bold');
+                doc.setFontSize(14);
+                doc.text('TRIP LOGS', 14, y);
+
+                doc.setDrawColor(200, 200, 200);
+                doc.line(14, y + 2, 196, y + 2);
+                y += 15;
+
+                const logs = [
+                    ['Start Mileage', `${trip.startMileage} km`],
+                    ['End Mileage', trip.endMileage ? `${trip.endMileage} km` : '---'],
+                    ['Fuel Consumed', trip.fuelVolume ? `${trip.fuelVolume} L` : '---'],
+                    ['Comments', trip.comments || 'No comments']
+                ];
+
+                doc.setFont('helvetica', 'normal');
+                doc.setFontSize(11);
+
+                logs.forEach(([label, value]) => {
+                    doc.setTextColor(100, 100, 100);
+                    doc.text(label, 14, y);
+                    doc.setTextColor(0, 0, 0);
+                    doc.text(String(value), 60, y);
+                    y += 10;
+                });
+            }
+
+            // Footer
+            const pageHeight = doc.internal.pageSize.height;
+            doc.setFillColor(...primaryColor);
+            doc.rect(0, pageHeight - 15, 210, 15, 'F');
+
+            doc.setTextColor(255, 255, 255);
+            doc.setFontSize(9);
+            doc.text('TruckFlow Fleet Management System', 14, pageHeight - 9);
+            doc.text('www.truckflow.com', 196, pageHeight - 9, { align: 'right' });
+
+            doc.save(`Trip_Report_${trip._id.slice(-8)}.pdf`);
+            alert.success('Report downloaded successfully!');
         } catch (error) {
+            console.error(error);
             alert.error('Failed to generate PDF');
         }
     };
