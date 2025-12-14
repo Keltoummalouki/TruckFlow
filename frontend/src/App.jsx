@@ -18,6 +18,7 @@ import TiresList from './pages/Tires/TiresList';
 import MaintenanceList from './pages/Maintenance/MaintenanceList';
 import Reports from './pages/Reports/Reports';
 import Profile from './pages/Profile';
+import MyTrips from './pages/Driver/MyTrips';
 import './App.css';
 
 function App() {
@@ -73,7 +74,7 @@ function App() {
                     {/* Placeholder routes for navigation items */}
                     <Route path="maintenance" element={<MaintenanceList />} />
                     <Route path="reports" element={<Reports />} />
-                    <Route path="my-trips" element={<PlaceholderPage title="My Trips" />} />
+                    <Route path="my-trips" element={<MyTrips />} />
                     <Route path="profile" element={<Profile />} />
                     <Route path="settings" element={<PlaceholderPage title="Settings" />} />
 
