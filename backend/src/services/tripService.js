@@ -16,7 +16,7 @@ export const update = (id, data) => baseService.update(id, data);
 export const deleteTrip = (id) => baseService.delete(id);
 
 export const getByDriver = async (driverId) => {
-    return await Trip.find({ driver: driverId }).populate('truck driver');
+    return await Trip.find({ driver: driverId }).populate('truck driver').sort({ createdAt: -1 });
 };
 
 export const getByStatus = async (status) => {

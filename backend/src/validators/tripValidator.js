@@ -28,8 +28,19 @@ export const updateTripSchema = Joi.object({
 
 export const updateStatusSchema = Joi.object({
     status: Joi.string().valid('pending', 'in_progress', 'completed', 'cancelled').required(),
-    startMileage: Joi.number().min(0),
-    endMileage: Joi.number().min(0),
-    fuelVolume: Joi.number().min(0),
-    comments: Joi.string()
+    startMileage: Joi.number().min(0).optional(),
+    endMileage: Joi.number().min(0).optional(),
+    fuelVolume: Joi.number().min(0).optional(),
+    comments: Joi.string().optional(),
+    actualDeparture: Joi.date().optional(),
+    actualArrival: Joi.date().optional(),
+    distance: Joi.number().min(0).optional(),
+    completionNotes: Joi.string().optional()
 });
+
+export const completeTripsSchema = Joi.object({
+    endMileage: Joi.number().min(0).required(),
+    fuelVolume: Joi.number().min(0).required(),
+    actualArrival: Joi.date().required(),
+    completionNotes: Joi.string().optional().allow(null, '')
+}).unknown(false);
