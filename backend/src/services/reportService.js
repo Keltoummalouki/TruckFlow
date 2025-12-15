@@ -1,4 +1,4 @@
-import Trip from '../models/TripModel.js';
+import Trip from '../models/tripModel.js';
 import Truck from '../models/truckModel.js';
 import Tire from '../models/tireModel.js';
 

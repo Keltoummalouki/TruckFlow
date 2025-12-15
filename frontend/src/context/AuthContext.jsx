@@ -34,7 +34,11 @@ export const AuthProvider = ({ children }) => {
         localStorage.setItem('token', data.accessToken);
         localStorage.setItem('refreshToken', data.refreshToken);
         } catch (err) {
-        setError(err.response?.data?.message || 'Login failed');
+        if (err.response?.status === 429) {
+            setError('Too many login attempts. Please wait 15 minutes before trying again.');
+        } else {
+            setError(err.response?.data?.message || 'Login failed');
+        }
         throw err;
         } finally {
         setLoading(false);
@@ -51,7 +55,11 @@ export const AuthProvider = ({ children }) => {
         localStorage.setItem('token', data.accessToken);
         localStorage.setItem('refreshToken', data.refreshToken);
         } catch (err) {
-        setError(err.response?.data?.message || 'Registration failed');
+        if (err.response?.status === 429) {
+            setError('Too many registration attempts. Please wait 15 minutes before trying again.');
+        } else {
+            setError(err.response?.data?.message || 'Registration failed');
+        }
         throw err;
         } finally {
         setLoading(false);

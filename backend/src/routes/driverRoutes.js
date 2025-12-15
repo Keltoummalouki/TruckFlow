@@ -3,6 +3,7 @@ import * as driverController from '../controllers/driverController.js';
 import { authenticate, authorize } from '../middlewares/authMiddleware.js';
 import { validate } from '../middlewares/validationMiddleware.js';
 import { updateStatusSchema } from '../validators/tripValidator.js';
+import * as pdfController from '../controllers/pdfController.js';
 
 const router = express.Router();
 
@@ -12,5 +13,7 @@ router.use(authorize('driver'));
 router.get('/trips', driverController.getMyTrips);
 router.get('/trips/:id', driverController.getTripById);
 router.patch('/trips/:id/status', validate(updateStatusSchema), driverController.updateTripStatus);
+router.get('/trips/:id/download-pdf', pdfController.downloadTripPDF);
+
 
 export default router;

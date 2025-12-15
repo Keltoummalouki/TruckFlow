@@ -1,0 +1,65 @@
+{
+  "info": {
+    "name": "TruckFlow - PDF Generation",
+    "description": "PDF generation for trip mission orders",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Trip - Download PDF (Driver)",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{DRIVER_TOKEN}}"
+          }
+        ],
+        "url": {
+          "raw": "{{BASE_URL}}/api/driver/trips/{{TRIP_ID}}/download-pdf",
+          "host": ["{{BASE_URL}}"],
+          "path": ["api", "driver", "trips", "{{TRIP_ID}}", "download-pdf"]
+        }
+      }
+    },
+    {
+      "name": "Trip - Download PDF (Admin)",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{ADMIN_TOKEN}}"
+          }
+        ],
+        "url": {
+          "raw": "{{BASE_URL}}/api/trips/{{TRIP_ID}}/download-pdf",
+          "host": ["{{BASE_URL}}"],
+          "path": ["api", "trips", "{{TRIP_ID}}", "download-pdf"]
+        }
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "BASE_URL",
+      "value": "http://localhost:5000",
+      "type": "string"
+    },
+    {
+      "key": "ADMIN_TOKEN",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "DRIVER_TOKEN",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "TRIP_ID",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}

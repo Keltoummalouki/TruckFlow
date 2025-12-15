@@ -2,7 +2,8 @@ import express from 'express';
 import * as tripController from '../controllers/tripController.js';
 import { authenticate, authorize } from '../middlewares/authMiddleware.js';
 import { validate } from '../middlewares/validationMiddleware.js';
-import { createTripSchema, updateTripSchema, updateStatusSchema } from '../validators/tripValidator.js';
+import { createTripSchema, updateTripSchema, updateStatusSchema, completeTripsSchema } from '../validators/tripValidator.js';
+import * as pdfController from '../controllers/pdfController.js';
 
 const router = express.Router();
 
@@ -15,6 +16,10 @@ router.get('/:id', tripController.getById);
 router.post('/', authorize('admin'), validate(createTripSchema), tripController.create);
 router.put('/:id', authorize('admin'), validate(updateTripSchema), tripController.update);
 router.patch('/:id/status', validate(updateStatusSchema), tripController.updateStatus);
+router.patch('/:id/start', tripController.startTrip);
+router.patch('/:id/complete', validate(completeTripsSchema), tripController.completeTrip);
+router.patch('/:id/details', tripController.updateTripDetails);
 router.delete('/:id', authorize('admin'), tripController.deleteTrip);
+router.get('/:id/download-pdf', pdfController.downloadTripPDF);
 
 export default router;

@@ -9,7 +9,7 @@ export default function Register() {
     lastName: '',
     email: '',
     password: '',
-    role: 'admin',
+    role: 'driver',
   });
   const [showPassword, setShowPassword] = useState(false);
   const [termsAccepted, setTermsAccepted] = useState(false);
@@ -39,7 +39,7 @@ export default function Register() {
         <div className="relative z-10 flex flex-col justify-between p-12 text-white w-full">
           <div className="flex items-center space-x-3">
             <div className="bg-white/20 backdrop-blur-sm p-2.5 rounded-xl border border-white/30 shadow-lg">
-              <Activity className="h-7 w-7 text-white" />
+              <Truck className="w-6 h-6 text-white" />
             </div>
             <span className="text-2xl font-bold tracking-tight">
               Truck<span className="text-blue-200">Flow</span>

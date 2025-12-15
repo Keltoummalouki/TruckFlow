@@ -5,6 +5,14 @@ const tripSchema = new mongoose.Schema({
         type: Date,
         required: true
     },
+    actualDeparture: {
+        type: Date,
+        default: null
+    },
+    actualArrival: {
+        type: Date,
+        default: null
+    },
     departureLoc: {
         type: String,
         required: true
@@ -26,11 +34,16 @@ const tripSchema = new mongoose.Schema({
         type: Number,
         default: 0
     },
+    distance: {
+        type: Number,
+        default: 0
+    },
     fuelVolume: {
         type: Number,
         default: 0
     },
     comments: String,
+    completionNotes: String,
     truck: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Truck',
