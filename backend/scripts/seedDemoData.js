@@ -3,12 +3,12 @@ import dotenv from 'dotenv';
 import bcrypt from 'bcryptjs';
 
 // Import models
-import User from '../models/userModel.js';
-import Truck from '../models/truckModel.js';
-import Trip from '../models/tripModel.js';
-import Trailer from '../models/trailerModel.js';
-import Tire from '../models/tireModel.js';
-import Maintenance from '../models/maintenanceModel.js';
+import User from '../src/models/userModel.js';
+import Truck from '../src/models/truckModel.js';
+import Trip from '../src/models/tripModel.js';
+import Trailer from '../src/models/trailerModel.js';
+import Tire from '../src/models/tireModel.js';
+import Maintenance from '../src/models/maintenanceModel.js';
 
 dotenv.config();
 

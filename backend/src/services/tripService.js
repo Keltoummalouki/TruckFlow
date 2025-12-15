@@ -1,4 +1,4 @@
-import Trip from '../models/TripModel.js';
+import Trip from '../models/tripModel.js';
 import { createBaseService } from './baseService.js';
 
 const baseService = createBaseService(Trip);

@@ -60,7 +60,7 @@ export default function Sidebar({ isOpen, onToggle }) {
                         <div className="flex items-center justify-between">
                             <div className={`flex items-center space-x-3 transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0 lg:opacity-0'}`}>
                                 <div className="bg-white/20 backdrop-blur-sm p-2 rounded-xl border border-white/30 shadow-lg">
-                                    <Activity className="h-6 w-6 text-white" />
+                                        <Truck className="w-6 h-6 text-white" />
                                 </div>
                                 <span className="text-xl font-bold text-white tracking-tight whitespace-nowrap">
                                     Truck<span className="text-blue-200">Flow</span>

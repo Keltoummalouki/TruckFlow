@@ -1,6 +1,6 @@
 import { jest } from '@jest/globals';
 import * as tripService from '../../services/tripService.js';
-import Trip from '../../models/TripModel.js';
+import Trip from '../../models/tripModel.js';
 
 jest.mock('../../models/tripModel.js');
 
@@ -17,12 +17,21 @@ describe('TripService', () => {
             ];
 
             Trip.find = jest.fn().mockReturnValue({
-                populate: jest.fn().mockResolvedValue(mockTrips)
+                populate: jest.fn().mockReturnValue({
+                    sort: jest.fn().mockReturnValue({
+                        skip: jest.fn().mockReturnValue({
+                            limit: jest.fn().mockResolvedValue(mockTrips)
+                        })
+                    })
+                })
             });
+
+            Trip.countDocuments = jest.fn().mockResolvedValue(2);
 
             const result = await tripService.getAll();
 
-            expect(result).toEqual(mockTrips);
+            expect(result.data).toEqual(mockTrips);
+            expect(result.pagination).toBeDefined();
         });
     });
 
@@ -38,6 +47,26 @@ describe('TripService', () => {
             const result = await tripService.getById(tripId);
 
             expect(result).toEqual(mockTrip);
+            expect(Trip.findById).toHaveBeenCalledWith(tripId);
+        });
+    });
+
+    describe('getByDriver', () => {
+        it('should return trips for a specific driver', async () => {
+            const driverId = '507f1f77bcf86cd799439013';
+            const mockTrips = [
+                { _id: '507f1f77bcf86cd799439011', driver: driverId }
+            ];
+
+            Trip.find = jest.fn().mockReturnValue({
+                populate: jest.fn().mockReturnValue({
+                    sort: jest.fn().mockResolvedValue(mockTrips)
+                })
+            });
+
+            const result = await tripService.getByDriver(driverId);
+
+            expect(result).toEqual(mockTrips);
         });
     });
 });

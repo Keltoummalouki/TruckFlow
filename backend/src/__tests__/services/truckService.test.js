@@ -101,12 +101,12 @@ describe('TruckService', () => {
 
   describe('getAvailableTrucks', () => {
     it('devrait retourner les camions disponibles', async () => {
-      const mockTrucks = [{ id: 1, status: 'available' }];
+      const mockTrucks = [{ id: 1, status: 'active' }];
       mockTruckModel.find.mockResolvedValue(mockTrucks);
 
       const result = await getAvailableTrucks();
 
-      expect(mockTruckModel.find).toHaveBeenCalledWith({ status: 'available' });
+      expect(mockTruckModel.find).toHaveBeenCalledWith({ status: 'active' });
       expect(result).toEqual(mockTrucks);
     });
   });
@@ -115,12 +115,12 @@ describe('TruckService', () => {
     it('devrait assigner un chauffeur à un camion', async () => {
       const truckId = '507f1f77bcf86cd799439011';
       const driverId = '507f1f77bcf86cd799439012';
-      const mockUpdated = { id: truckId, driver: driverId, status: 'in_use' };
+      const mockUpdated = { id: truckId, driver: driverId };
       mockBaseService.update.mockResolvedValue(mockUpdated);
 
       const result = await assignDriver(truckId, driverId);
 
-      expect(mockBaseService.update).toHaveBeenCalledWith(truckId, { driver: driverId, status: 'in_use' });
+      expect(mockBaseService.update).toHaveBeenCalledWith(truckId, { driver: driverId });
       expect(result).toEqual(mockUpdated);
     });
   });
@@ -128,12 +128,12 @@ describe('TruckService', () => {
   describe('unassignDriver', () => {
     it('devrait désassigner un chauffeur d\'un camion', async () => {
       const truckId = '507f1f77bcf86cd799439011';
-      const mockUpdated = { id: truckId, driver: null, status: 'available' };
+      const mockUpdated = { id: truckId, driver: null };
       mockBaseService.update.mockResolvedValue(mockUpdated);
 
       const result = await unassignDriver(truckId);
 
-      expect(mockBaseService.update).toHaveBeenCalledWith(truckId, { driver: null, status: 'available' });
+      expect(mockBaseService.update).toHaveBeenCalledWith(truckId, { driver: null });
       expect(result).toEqual(mockUpdated);
     });
   });

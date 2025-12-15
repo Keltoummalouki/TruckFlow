@@ -1,0 +1,51 @@
+services:
+  mongodb:
+    image: mongo:7.0
+    container_name: truckflow-mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - truckflow-network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: truckflow-backend
+    environment:
+      NODE_ENV: production
+      PORT: 5000
+      MONGODB_URI: mongodb://mongodb:27017/truckflow
+      JWT_SECRET: 7d1e824f807ee04e819e876d285cce9bbba2a21254f2595517456bd5f03b8a1e
+      JWT_REFRESH_SECRET: 2ad12922216842833f78da2d579a886540796e828d3c423d883e95f4ae16ff79
+      JWT_EXPIRE: 15m
+      JWT_REFRESH_EXPIRE: 7d
+    ports:
+      - "5000:5000"
+    depends_on:
+      - mongodb
+    networks:
+      - truckflow-network
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: truckflow-frontend
+    ports:
+      - "5173:3000"
+    depends_on:
+      - backend
+    networks:
+      - truckflow-network
+    restart: unless-stopped
+
+volumes:
+  mongodb_data:
+
+networks:
+  truckflow-network:
+    driver: bridge
