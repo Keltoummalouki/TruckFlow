@@ -2,7 +2,7 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches: [main , TF-42-CI-Pipeline]
+    branches: [main , dev]
   pull_request:
     branches: [main]
 
