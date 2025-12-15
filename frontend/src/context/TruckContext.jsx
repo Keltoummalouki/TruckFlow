@@ -3,6 +3,7 @@ import * as truckApi from '../api/truckApi';
 
 const TruckContext = createContext();
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useTrucks = () => {
     const context = useContext(TruckContext);
     if (!context) {

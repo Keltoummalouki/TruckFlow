@@ -3,6 +3,7 @@ import * as trailerApi from '../api/trailerApi';
 
 const TrailerContext = createContext();
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useTrailers = () => {
     const context = useContext(TrailerContext);
     if (!context) {

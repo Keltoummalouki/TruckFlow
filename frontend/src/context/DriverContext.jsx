@@ -3,6 +3,7 @@ import * as driverApi from '../api/driverApi';
 
 const DriverContext = createContext();
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useDrivers = () => {
     const context = useContext(DriverContext);
     if (!context) {
