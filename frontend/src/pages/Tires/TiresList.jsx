@@ -18,10 +18,6 @@ const TiresList = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(10);
 
-    useEffect(() => {
-        loadTires();
-    }, [currentPage, itemsPerPage, searchTerm, statusFilter]);
-
     const loadTires = async () => {
         try {
             const params = { page: currentPage, limit: itemsPerPage };
@@ -32,6 +28,10 @@ const TiresList = () => {
             alert.error(error.message || 'Failed to load tires');
         }
     };
+
+    useEffect(() => {
+        loadTires();
+    }, [currentPage, itemsPerPage, searchTerm, statusFilter, loadTires]);
 
     const handleDelete = async (tire) => {
         const result = await alert.confirm(

@@ -19,11 +19,6 @@ const TripsList = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(10);
 
-    // Fetch trips on mount and when filters change
-    useEffect(() => {
-        loadTrips();
-    }, [currentPage, itemsPerPage, searchTerm, statusFilter]);
-
     const loadTrips = async () => {
         try {
             const params = {
@@ -38,6 +33,11 @@ const TripsList = () => {
             alert.error(error.message || 'Failed to load trips');
         }
     };
+
+    // Fetch trips on mount and when filters change
+    useEffect(() => {
+        loadTrips();
+    }, [currentPage, itemsPerPage, searchTerm, statusFilter, loadTrips]);
 
     const handleAddNew = () => {
         setSelectedTrip(null);

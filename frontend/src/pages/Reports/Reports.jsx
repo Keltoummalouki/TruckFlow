@@ -14,7 +14,7 @@ const Reports = () => {
 
     useEffect(() => {
         loadReportsData();
-    }, []);
+    }, [loadReportsData]);
 
     const loadReportsData = async () => {
         setLoading(true);
@@ -79,11 +79,9 @@ const Reports = () => {
     const processMaintenanceData = (maintenance) => {
         // Group by type
         const typeCounts = {};
-        let totalCost = 0;
 
         maintenance.forEach(m => {
             typeCounts[m.type] = (typeCounts[m.type] || 0) + 1;
-            totalCost += m.cost || 0;
         });
 
         const maintenanceChartData = Object.entries(typeCounts).map(([type, count]) => ({
@@ -104,7 +102,7 @@ const Reports = () => {
         };
 
         trips.forEach(trip => {
-            if (statusCounts.hasOwnProperty(trip.status)) {
+            if (Object.prototype.hasOwnProperty.call(statusCounts, trip.status)) {
                 statusCounts[trip.status]++;
             }
         });
@@ -126,7 +124,7 @@ const Reports = () => {
         };
 
         trucks.forEach(truck => {
-            if (statusCounts.hasOwnProperty(truck.status)) {
+            if (Object.prototype.hasOwnProperty.call(statusCounts, truck.status)) {
                 statusCounts[truck.status]++;
             }
         });

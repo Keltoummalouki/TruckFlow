@@ -5,6 +5,7 @@ import { TripProvider } from './context/TripContext';
 import { TrailerProvider } from './context/TrailerContext';
 import { TireProvider } from './context/TireContext';
 import { MaintenanceProvider } from './context/MaintenanceContext';
+import Home from './pages/Home';
 import Login from './components/Login';
 import Register from './components/Register';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -34,6 +35,10 @@ function App() {
                 <Routes>
                   {/* Public Routes */}
                   <Route
+                    path="/"
+                    element={!user ? <Home /> : <Navigate to="/dashboard" replace />}
+                  />
+                  <Route
                     path="/login"
                     element={!user ? <Login /> : <Navigate to="/dashboard" replace />}
                   />
@@ -44,7 +49,6 @@ function App() {
 
                   {/* Protected Routes with Layout */}
                   <Route
-                    path="/"
                     element={
                       <ProtectedRoute>
                         <MainLayout />
@@ -53,65 +57,62 @@ function App() {
                   >
                     {/* Dashboard - Role-based routing */}
                     <Route
-                      path="dashboard"
+                      path="/dashboard"
                       element={
                         user?.role === 'admin' ? <AdminDashboard /> : <DriverDashboard />
                       }
                     />
 
                     {/* Admin Only Routes */}
-                    <Route path="trucks" element={
+                    <Route path="/trucks" element={
                       <ProtectedRoute allowedRoles={['admin']}>
                         <TrucksList />
                       </ProtectedRoute>
                     } />
-                    <Route path="trips" element={
+                    <Route path="/trips" element={
                       <ProtectedRoute allowedRoles={['admin']}>
                         <TripsList />
                       </ProtectedRoute>
                     } />
-                    <Route path="trailers" element={
+                    <Route path="/trailers" element={
                       <ProtectedRoute allowedRoles={['admin']}>
                         <TrailersList />
                       </ProtectedRoute>
                     } />
-                    <Route path="tires" element={
+                    <Route path="/tires" element={
                       <ProtectedRoute allowedRoles={['admin']}>
                         <TiresList />
                       </ProtectedRoute>
                     } />
-                    <Route path="maintenance" element={
+                    <Route path="/maintenance" element={
                       <ProtectedRoute allowedRoles={['admin']}>
                         <MaintenanceList />
                       </ProtectedRoute>
                     } />
-                    <Route path="reports" element={
+                    <Route path="/reports" element={
                       <ProtectedRoute allowedRoles={['admin']}>
                         <Reports />
                       </ProtectedRoute>
                     } />
-                    <Route path="settings" element={
+                    <Route path="/settings" element={
                       <ProtectedRoute allowedRoles={['admin']}>
                         <PlaceholderPage title="Settings" />
                       </ProtectedRoute>
                     } />
 
                     {/* Driver Only Routes */}
-                    <Route path="my-trips" element={
+                    <Route path="/my-trips" element={
                       <ProtectedRoute allowedRoles={['driver']}>
                         <MyTrips />
                       </ProtectedRoute>
                     } />
 
                     {/* Shared Routes */}
-                    <Route path="profile" element={<Profile />} />
-
-                    {/* Default redirect */}
-                    <Route index element={<Navigate to="/dashboard" replace />} />
+                    <Route path="/profile" element={<Profile />} />
                   </Route>
 
                   {/* Fallback redirect */}
-                  <Route path="*" element={<Navigate to={user ? "/dashboard" : "/login"} replace />} />
+                  <Route path="*" element={<Navigate to={user ? "/dashboard" : "/"} replace />} />
                 </Routes>
               </MaintenanceProvider>
             </TireProvider>

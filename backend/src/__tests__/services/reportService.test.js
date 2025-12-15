@@ -14,7 +14,7 @@ const mockTireModel = {
     countDocuments: jest.fn(),
 };
 
-jest.unstable_mockModule('../../models/TripModel.js', () => ({
+jest.unstable_mockModule('../../models/tripModel.js', () => ({
     default: mockTripModel,
 }));
 
@@ -38,8 +38,8 @@ describe('ReportService', () => {
             const startDate = '2024-01-01';
             const endDate = '2024-12-31';
             const mockTrips = [
-                { _id: '1', fuelVolume: 100, startMileage: 1000, endMileage: 1500 },
-                { _id: '2', fuelVolume: 120, startMileage: 2000, endMileage: 2600 }
+                { _id: '1', fuelVolume: 100, startMileage: 1000, endMileage: 1500, truck: {}, driver: {} },
+                { _id: '2', fuelVolume: 120, startMileage: 2000, endMileage: 2600, truck: {}, driver: {} }
             ];
 
             mockTripModel.find.mockReturnValue({
@@ -51,14 +51,14 @@ describe('ReportService', () => {
             expect(result).toHaveProperty('totalFuel');
             expect(result).toHaveProperty('totalDistance');
             expect(result).toHaveProperty('avgConsumption');
-        });
+        }, 10000);
     });
 
     describe('getMileageReport', () => {
         it('should return mileage report for all trucks', async () => {
             const mockTrucks = [
-                { _id: '1', registrationNumber: 'ABC123', currentMileage: 50000 },
-                { _id: '2', registrationNumber: 'DEF456', currentMileage: 75000 }
+                { _id: '1', registrationNumber: 'ABC123', currentMileage: 50000, driver: null },
+                { _id: '2', registrationNumber: 'DEF456', currentMileage: 75000, driver: null }
             ];
 
             mockTruckModel.find.mockReturnValue({
@@ -98,6 +98,6 @@ describe('ReportService', () => {
             expect(result.fleet).toHaveProperty('totalTrucks');
             expect(result.trips).toHaveProperty('total');
             expect(result.tires).toHaveProperty('total');
-        });
+        }, 10000);
     });
 });

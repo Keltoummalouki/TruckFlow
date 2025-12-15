@@ -32,7 +32,7 @@ export default function AdminDashboard() {
 
     useEffect(() => {
         loadDashboardData();
-    }, []);
+    }, [loadDashboardData]);
 
     const loadDashboardData = async () => {
         setLoading(true);

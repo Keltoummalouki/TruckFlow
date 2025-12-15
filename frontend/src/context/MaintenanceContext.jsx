@@ -3,6 +3,7 @@ import * as maintenanceApi from '../api/maintenanceApi';
 
 const MaintenanceContext = createContext();
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useMaintenances = () => {
     const context = useContext(MaintenanceContext);
     if (!context) {

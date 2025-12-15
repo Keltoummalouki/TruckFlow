@@ -25,7 +25,7 @@ export default function Login() {
                 <div className="relative z-10 flex flex-col justify-between p-12 text-white w-full">
                     <div className="flex items-center space-x-3">
                         <div className="bg-white/20 backdrop-blur-sm p-2.5 rounded-xl border border-white/30 shadow-lg">
-                            <Activity className="h-7 w-7 text-white" />
+                            <Truck className="w-6 h-6 text-white" />
                         </div>
                         <span className="text-2xl font-bold tracking-tight">
                             Truck<span className="text-blue-200">Flow</span>
@@ -83,13 +83,35 @@ export default function Login() {
                         </div>
 
                         {error && (
-                            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl flex items-start gap-3">
-                                <div className="bg-red-100 p-1.5 rounded-lg flex-shrink-0">
-                                    <AlertCircle size={16} className="text-red-600" />
+                            <div className={`mb-6 p-4 border rounded-xl flex items-start gap-3 ${
+                                error.includes('Too many') 
+                                    ? 'bg-amber-50 border-amber-200' 
+                                    : 'bg-red-50 border-red-200'
+                            }`}>
+                                <div className={`p-1.5 rounded-lg flex-shrink-0 ${
+                                    error.includes('Too many')
+                                        ? 'bg-amber-100'
+                                        : 'bg-red-100'
+                                }`}>
+                                    {error.includes('Too many') ? (
+                                        <Clock size={16} className="text-amber-600" />
+                                    ) : (
+                                        <AlertCircle size={16} className="text-red-600" />
+                                    )}
                                 </div>
                                 <div className="flex-1">
-                                    <p className="text-sm font-medium text-red-900">Authentication Failed</p>
-                                    <p className="text-sm text-red-700 mt-0.5">{error}</p>
+                                    <p className={`text-sm font-medium ${
+                                        error.includes('Too many')
+                                            ? 'text-amber-900'
+                                            : 'text-red-900'
+                                    }`}>
+                                        {error.includes('Too many') ? 'Rate Limit Exceeded' : 'Authentication Failed'}
+                                    </p>
+                                    <p className={`text-sm mt-0.5 ${
+                                        error.includes('Too many')
+                                            ? 'text-amber-700'
+                                            : 'text-red-700'
+                                    }`}>{error}</p>
                                 </div>
                             </div>
                         )}
