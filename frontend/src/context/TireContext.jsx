@@ -3,6 +3,7 @@ import * as tireApi from '../api/tireApi';
 
 const TireContext = createContext();
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useTires = () => {
     const context = useContext(TireContext);
     if (!context) {

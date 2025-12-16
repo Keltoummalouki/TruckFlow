@@ -50,7 +50,7 @@ export default function MyTrips() {
                 trip.driver === user?.id || trip.driver?._id === user?.id
             );
             setTrips(myTrips);
-        } catch (error) {
+        } catch {
             alert.error('Failed to load trips');
         } finally {
             setLoading(false);
@@ -94,7 +94,7 @@ export default function MyTrips() {
             });
             alert.success('Trip started successfully!');
             loadTrips();
-        } catch (error) {
+        } catch {
             alert.error('Failed to start trip');
         }
     };
@@ -107,7 +107,7 @@ export default function MyTrips() {
             alert.success('Trip updated successfully!');
             closeModal();
             loadTrips();
-        } catch (error) {
+        } catch {
             alert.error('Failed to update trip');
         } finally {
             setUpdating(false);
@@ -133,7 +133,7 @@ export default function MyTrips() {
             alert.success('Trip completed successfully!');
             closeModal();
             loadTrips();
-        } catch (error) {
+        } catch {
             alert.error('Failed to complete trip');
         } finally {
             setUpdating(false);
@@ -148,7 +148,6 @@ export default function MyTrips() {
             // Brand Colors
             const primaryColor = [37, 99, 235]; // Blue-600
             const secondaryColor = [71, 85, 105]; // Slate-600
-            const accentColor = [22, 163, 74]; // Green-600
 
             // 1. Header Section
             // Logo Background

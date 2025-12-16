@@ -19,10 +19,6 @@ const TrailersList = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(10);
 
-    useEffect(() => {
-        loadTrailers();
-    }, [currentPage, itemsPerPage, searchTerm, statusFilter, typeFilter]);
-
     const loadTrailers = async () => {
         try {
             const params = {
@@ -38,6 +34,10 @@ const TrailersList = () => {
             alert.error(error.message || 'Failed to load trailers');
         }
     };
+
+    useEffect(() => {
+        loadTrailers();
+    }, [currentPage, itemsPerPage, searchTerm, statusFilter, typeFilter]);
 
     const handleAddNew = () => {
         setSelectedTrailer(null);

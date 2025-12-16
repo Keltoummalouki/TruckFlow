@@ -3,6 +3,7 @@ import * as tripApi from '../api/tripApi';
 
 const TripContext = createContext();
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useTrips = () => {
     const context = useContext(TripContext);
     if (!context) {

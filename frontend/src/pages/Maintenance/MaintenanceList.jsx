@@ -20,10 +20,6 @@ const MaintenanceList = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(10);
 
-    useEffect(() => {
-        loadMaintenances();
-    }, [currentPage, itemsPerPage, searchTerm, statusFilter, typeFilter]);
-
     const loadMaintenances = async () => {
         try {
             const params = { page: currentPage, limit: itemsPerPage };
@@ -35,6 +31,10 @@ const MaintenanceList = () => {
             alert.error(error.message || 'Failed to load maintenance records');
         }
     };
+
+    useEffect(() => {
+        loadMaintenances();
+    }, [currentPage, itemsPerPage, searchTerm, statusFilter, typeFilter]);
 
     const handleDelete = async (maintenance) => {
         const result = await alert.confirm(

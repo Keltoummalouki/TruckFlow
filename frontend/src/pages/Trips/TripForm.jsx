@@ -125,7 +125,7 @@ const TripForm = ({ trip, onSuccess, onCancel }) => {
 
             setTrucks(trucksResponse.data || []);
             setDrivers(driversResponse.data || []);
-        } catch (error) {
+        } catch {
             alert.error('Failed to load trucks and drivers');
         } finally {
             setLoadingOptions(false);

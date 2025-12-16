@@ -18,11 +18,6 @@ const TrucksList = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(10);
 
-    // Fetch trucks on mount and when filters change
-    useEffect(() => {
-        loadTrucks();
-    }, [currentPage, itemsPerPage, searchTerm, statusFilter]);
-
     const loadTrucks = async () => {
         try {
             const params = {
@@ -37,6 +32,11 @@ const TrucksList = () => {
             alert.error(error.message || 'Failed to load trucks');
         }
     };
+
+    // Fetch trucks on mount and when filters change
+    useEffect(() => {
+        loadTrucks();
+    }, [currentPage, itemsPerPage, searchTerm, statusFilter]);
 
     const handleAddNew = () => {
         setSelectedTruck(null);

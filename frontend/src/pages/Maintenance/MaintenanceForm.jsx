@@ -71,7 +71,7 @@ const MaintenanceForm = ({ maintenance, onSuccess, onCancel }) => {
         } else if (targetType === 'tire') {
             loadTires();
         }
-    }, [targetType]);
+    }, [targetType, loadTrucks, loadTrailers, loadTires]);
 
     useEffect(() => {
         if (maintenance) {
@@ -94,7 +94,7 @@ const MaintenanceForm = ({ maintenance, onSuccess, onCancel }) => {
         try {
             const response = await getAvailableTrucks();
             setTrucks(response.data || []);
-        } catch (error) {
+        } catch {
             alert.error('Failed to load trucks');
         } finally {
             setLoadingTrucks(false);
@@ -106,7 +106,7 @@ const MaintenanceForm = ({ maintenance, onSuccess, onCancel }) => {
         try {
             const response = await getTrailers({ limit: 100 });
             setTrailers(response.data || []);
-        } catch (error) {
+        } catch {
             alert.error('Failed to load trailers');
         } finally {
             setLoadingTrailers(false);
@@ -118,7 +118,7 @@ const MaintenanceForm = ({ maintenance, onSuccess, onCancel }) => {
         try {
             const response = await getTires({ limit: 100 });
             setTires(response.data || []);
-        } catch (error) {
+        } catch {
             alert.error('Failed to load tires');
         } finally {
             setLoadingTires(false);
