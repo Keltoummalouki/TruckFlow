@@ -74,6 +74,29 @@ export const showWarningAlert = (message, title = 'Warning') => {
     });
 };
 
+// Input dialog
+export const showInputDialog = (title, inputLabel, inputType = 'text', inputValue = '') => {
+    return Swal.fire({
+        title,
+        input: inputType,
+        inputLabel,
+        inputValue,
+        showCancelButton: true,
+        confirmButtonColor: '#3b82f6',
+        cancelButtonColor: '#6b7280',
+        confirmButtonText: 'Confirm',
+        cancelButtonText: 'Cancel',
+        inputValidator: (value) => {
+            if (!value) {
+                return 'This field is required!';
+            }
+            if (inputType === 'number' && (isNaN(value) || value <= 0)) {
+                return 'Please enter a valid positive number!';
+            }
+        }
+    });
+};
+
 // Toast notification (small, non-intrusive)
 export const showToast = (message, icon = 'success') => {
     const Toast = Swal.mixin({

@@ -7,7 +7,8 @@ import {
     closeLoadingAlert,
     showInfoAlert,
     showWarningAlert,
-    showToast
+    showToast,
+    showInputDialog
 } from '../utils/alertUtils';
 
 /**
@@ -47,6 +48,10 @@ const useAlert = () => {
         return showToast(message, icon);
     }, []);
 
+    const input = useCallback((title, inputLabel, inputType, inputValue) => {
+        return showInputDialog(title, inputLabel, inputType, inputValue);
+    }, []);
+
     return {
         success,
         error,
@@ -55,7 +60,8 @@ const useAlert = () => {
         closeLoading,
         info,
         warning,
-        toast
+        toast,
+        input
     };
 };
 

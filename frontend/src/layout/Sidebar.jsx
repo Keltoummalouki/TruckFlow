@@ -69,7 +69,7 @@ export default function Sidebar({ isOpen, onToggle }) {
 
                             <div className={`hidden lg:flex items-center justify-center transition-opacity duration-300 ${isOpen ? 'opacity-0 w-0' : 'opacity-100 w-full'}`}>
                                 <div className="bg-white/20 backdrop-blur-sm p-2 rounded-xl border border-white/30 shadow-lg">
-                                    <Activity className="h-6 w-6 text-white" />
+                                    <Truck className="h-6 w-6 text-white" />
                                 </div>
                             </div>
                         </div>
