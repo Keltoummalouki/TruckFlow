@@ -31,7 +31,7 @@ const TiresList = () => {
 
     useEffect(() => {
         loadTires();
-    }, [currentPage, itemsPerPage, searchTerm, statusFilter, loadTires]);
+    }, [currentPage, itemsPerPage, searchTerm, statusFilter]);
 
     const handleDelete = async (tire) => {
         const result = await alert.confirm(

@@ -34,7 +34,7 @@ const MaintenanceList = () => {
 
     useEffect(() => {
         loadMaintenances();
-    }, [currentPage, itemsPerPage, searchTerm, statusFilter, typeFilter, loadMaintenances]);
+    }, [currentPage, itemsPerPage, searchTerm, statusFilter, typeFilter]);
 
     const handleDelete = async (maintenance) => {
         const result = await alert.confirm(

@@ -36,7 +36,7 @@ const TrucksList = () => {
     // Fetch trucks on mount and when filters change
     useEffect(() => {
         loadTrucks();
-    }, [currentPage, itemsPerPage, searchTerm, statusFilter, loadTrucks]);
+    }, [currentPage, itemsPerPage, searchTerm, statusFilter]);
 
     const handleAddNew = () => {
         setSelectedTruck(null);

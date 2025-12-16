@@ -29,7 +29,7 @@ export default function DriverDashboard() {
 
     useEffect(() => {
         loadDashboardData();
-    }, [loadDashboardData]);
+    }, []);
 
     const loadDashboardData = async () => {
         setLoading(true);

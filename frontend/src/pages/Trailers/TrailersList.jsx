@@ -37,7 +37,7 @@ const TrailersList = () => {
 
     useEffect(() => {
         loadTrailers();
-    }, [currentPage, itemsPerPage, searchTerm, statusFilter, typeFilter, loadTrailers]);
+    }, [currentPage, itemsPerPage, searchTerm, statusFilter, typeFilter]);
 
     const handleAddNew = () => {
         setSelectedTrailer(null);

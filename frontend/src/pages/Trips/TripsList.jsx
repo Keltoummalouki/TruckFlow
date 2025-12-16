@@ -37,7 +37,7 @@ const TripsList = () => {
     // Fetch trips on mount and when filters change
     useEffect(() => {
         loadTrips();
-    }, [currentPage, itemsPerPage, searchTerm, statusFilter, loadTrips]);
+    }, [currentPage, itemsPerPage, searchTerm, statusFilter ]);
 
     const handleAddNew = () => {
         setSelectedTrip(null);

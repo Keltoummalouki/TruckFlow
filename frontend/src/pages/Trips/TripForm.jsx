@@ -92,7 +92,7 @@ const TripForm = ({ trip, onSuccess, onCancel }) => {
     // Load trucks and drivers on mount
     useEffect(() => {
         loadOptions();
-    }, [loadOptions]);
+    }, []);
 
     // Populate form when editing
     useEffect(() => {

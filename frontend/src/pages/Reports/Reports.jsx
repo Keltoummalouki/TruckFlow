@@ -14,7 +14,7 @@ const Reports = () => {
 
     useEffect(() => {
         loadReportsData();
-    }, [loadReportsData]);
+    }, []);
 
     const loadReportsData = async () => {
         setLoading(true);

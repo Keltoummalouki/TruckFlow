@@ -38,7 +38,7 @@ export default function MyTrips() {
 
     useEffect(() => {
         loadTrips();
-    }, [loadTrips]);
+    }, []);
 
     const loadTrips = async () => {
         setLoading(true);
