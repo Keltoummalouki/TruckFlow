@@ -20,7 +20,9 @@ beforeEach(() => {
         findById: jest.fn().mockReturnValue({
             populate: jest.fn().mockResolvedValue({ id: '507f1f77bcf86cd799439011', name: 'Test' })
         }),
-        findByIdAndUpdate: jest.fn(),
+        findByIdAndUpdate: jest.fn().mockReturnValue({
+            populate: jest.fn().mockResolvedValue({ id: '507f1f77bcf86cd799439011', name: 'Updated' })
+        }),
         findByIdAndDelete: jest.fn(),
         create: jest.fn(),
     };
@@ -83,7 +85,6 @@ describe('update', () => {
         const validId = '507f1f77bcf86cd799439011';
         const data = { name: 'Updated' };
         const mockUpdated = { id: validId, ...data };
-        mockModel.findByIdAndUpdate.mockResolvedValue(mockUpdated);
 
         const result = await service.update(validId, data);
 
@@ -93,7 +94,9 @@ describe('update', () => {
 
     it('devrait lancer une erreur si non trouvé', async () => {
         const validId = '507f1f77bcf86cd799439011';
-        mockModel.findByIdAndUpdate.mockResolvedValue(null);
+        mockModel.findByIdAndUpdate.mockReturnValue({
+            populate: jest.fn().mockResolvedValue(null)
+        });
 
         await expect(service.update(validId, {})).rejects.toThrow('Resource not found');
     });
