@@ -103,9 +103,9 @@ export const exportReportsToPDF = async (data) => {
             startY: yPos + 5,
             head: [['Truck', 'Driver', 'Route', 'Date', 'Status', 'Fuel']],
             body: data.trips.map(t => [
-                t.truck?.licensePlate || 'N/A',
-                t.driver?.name || 'N/A',
-                `${t.startLocation} → ${t.endLocation}`,
+                t.truck?.licensePlate || t.truck?.registrationNumber || 'N/A',
+                t.driver ? `${t.driver.firstName} ${t.driver.lastName}` : 'N/A',
+                `${t.startLocation || t.departureLoc} → ${t.endLocation || t.arrivalLoc}`,
                 new Date(t.scheduledDeparture).toLocaleDateString(),
                 t.status,
                 `${t.fuelVolume || 0}L`

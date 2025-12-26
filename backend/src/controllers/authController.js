@@ -6,6 +6,13 @@ export const register = async (req, res, next) => {
         const result = await authService.registerUser(req.body);
         res.status(201).json({ success: true, data: result });
     } catch (error) {
+        if (error.message === "Email already exists") {
+            return res.status(400).json({
+                success: false,
+                error: 'Bad Request',
+                message: 'Email already exists'
+            });
+        }
         next(error);
     }
 };
@@ -16,6 +23,13 @@ export const login = async (req, res, next) => {
         const result = await authService.loginUser(email, password);
         res.json({ success: true, data: result });
     } catch (error) {
+        if (error.message === "Invalid credentials") {
+            return res.status(401).json({
+                success: false,
+                error: 'Unauthorized',
+                message: 'Invalid email or password'
+            });
+        }
         next(error);
     }
 };

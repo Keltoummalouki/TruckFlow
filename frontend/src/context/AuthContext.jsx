@@ -37,7 +37,7 @@ export const AuthProvider = ({ children }) => {
         if (err.response?.status === 429) {
             setError('Too many login attempts. Please wait 15 minutes before trying again.');
         } else {
-            setError(err.response?.data?.message || 'Login failed');
+            setError(err.response?.data?.message || err.message || 'Login failed');
         }
         throw err;
         } finally {
@@ -58,7 +58,7 @@ export const AuthProvider = ({ children }) => {
         if (err.response?.status === 429) {
             setError('Too many registration attempts. Please wait 15 minutes before trying again.');
         } else {
-            setError(err.response?.data?.message || 'Registration failed');
+            setError(err.response?.data?.message || err.message || 'Registration failed');
         }
         throw err;
         } finally {

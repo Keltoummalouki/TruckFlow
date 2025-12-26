@@ -56,11 +56,11 @@ export const createBaseService = (model) => ({
         return await model.create(data);
     },
 
-    update: async (id, data) => {
+    update: async (id, data, populate = '') => {
         if (!mongoose.Types.ObjectId.isValid(id)) {
             throw new Error('Resource not found');
         }
-        const doc = await model.findByIdAndUpdate(id, data, { new: true, runValidators: true });
+        const doc = await model.findByIdAndUpdate(id, data, { new: true, runValidators: true }).populate(populate);
         if (!doc) throw new Error('Resource not found');
         return doc;
     },

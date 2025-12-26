@@ -1,9 +1,13 @@
 import PDFDocument from 'pdfkit';
-import * as tripService from './tripService.js';
+import Trip from '../models/tripModel.js';
 
 export const generateTripPDF = async (tripId) => {
-    const trip = await tripService.getById(tripId);
+    const trip = await Trip.findById(tripId).populate('truck driver');
     
+    if (!trip) {
+        throw new Error('Trip not found');
+    }
+
     return new Promise((resolve, reject) => {
         try {
             const doc = new PDFDocument({ margin: 50 });
@@ -36,6 +40,14 @@ export const generateTripPDF = async (tripId) => {
             if (trip.driver) {
                 doc.text(`Nom: ${trip.driver.firstName} ${trip.driver.lastName}`);
                 doc.text(`Email: ${trip.driver.email}`);
+                if (trip.driver.phone) {
+                    doc.text(`Téléphone: ${trip.driver.phone}`);
+                }
+                if (trip.driver.licenseNumber) {
+                    doc.text(`Numéro de permis: ${trip.driver.licenseNumber}`);
+                }
+            } else {
+                doc.text('Chauffeur: N/A');
             }
             doc.moveDown(2);
 
@@ -47,6 +59,8 @@ export const generateTripPDF = async (tripId) => {
                 doc.text(`Immatriculation: ${trip.truck.registrationNumber}`);
                 doc.text(`Marque: ${trip.truck.brand}`);
                 doc.text(`Kilométrage actuel: ${trip.truck.currentMileage} km`);
+            } else {
+                doc.text('Véhicule: N/A');
             }
             doc.moveDown(2);
 
